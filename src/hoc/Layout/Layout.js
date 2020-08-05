@@ -1,16 +1,19 @@
 import React from 'react';
 
 import Header from '../../components/Header/Header';
+import {Container } from '@material-ui/core';
 
-const layout = (props) => {
+export default function Layout(props) {
     return (
-        <React.Fragment>            
-            <Header signUp={props.signup}/>
-            <main>
-                {props.children}
-            </main>
+        <React.Fragment>
+            <div style={{backgroundColor: '#cfe8fc', height: '150vh'}}> 
+            <Header signUp={props.signup} />
+            <Container maxWidth="md" >
+                <main style={{backgroundColor: 'white', height: '150vh'}}>
+                    {props.children}
+                </main>
+            </Container>
+            </div>
         </React.Fragment>
     );
-}; 
-
-export default layout;
+};
