@@ -1,14 +1,85 @@
 import React from 'react';
-import { FormControl } from '@material-ui/core';
+import { Formik, Form, Field } from 'formik';
+import MuiTextField from '@material-ui/core/TextField';
+import Box from '@material-ui/core/Box';
+import {
+    Button,
+    LinearProgress,
+    MenuItem,
+    FormControl,
+    InputLabel,
+    FormControlLabel,
+    Typography,
+  } from '@material-ui/core';
+  import {
+    fieldToTextField,
+    TextField,
+    TextFieldProps,
+    Select,
+    Switch,
+  } from 'formik-material-ui';
 
-const Purchase = () => {
-    return (
-        <FormControl spacing={2}>
-            <TextField id="policy" label="po" onChange={inputHandler} />
-            <TextField id="password" type="password" label="Password" />
-            <Button className={styles.Button}>SIGN IN</Button>
-        </FormControl>
+function UpperCasingTextField(props) {
+    const {
+      form: {setFieldValue},
+      field: {name},
+    } = props;
+    const onChange = React.useCallback(
+      event => {
+        const {value} = event.target;
+        setFieldValue(name, value ? value.toUpperCase() : '');
+      },
+      [setFieldValue, name]
     );
-};
+    return <MuiTextField {...fieldToTextField(props)} onChange={onChange} />;
+  }
 
-export default Purchase;
+const Purchase = () => (
+        <Formik
+            initialValues={{
+                email: '',
+            }}
+            validate={values => {
+                console.log(values);
+                const errors = {};
+                if (!values.email) {
+                    errors.email = 'Required';
+                } else if (
+                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+                ) {
+                    errors.email = 'Invalid email address';
+                }
+                return errors;
+            }}
+            onSubmit={(values, { setSubmitting }) => {
+                setTimeout(() => {
+                    setSubmitting(false);
+                    alert(JSON.stringify(values, null, 2));
+                }, 500);
+            }}
+            render={({ submitForm, isSubmitting, touched, errors }) => (
+                <Form>
+                    <Box margin={1}>
+                        <Field
+                            component={UpperCasingTextField}
+                            name="email"
+                            type="email"
+                            label="Email"
+                        />
+                    </Box>
+                    <Box margin={1}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            disabled={isSubmitting}
+                            onClick={submitForm}
+                        >
+                            Submit
+                        </Button>
+                    </Box>
+                </Form>
+            )}
+        />    
+);
+
+export default Purchase; 

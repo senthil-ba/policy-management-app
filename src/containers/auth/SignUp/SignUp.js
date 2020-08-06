@@ -1,123 +1,177 @@
-import React from 'react';
-import { FormControl, Button, TextField, FormLabel, MenuItem, Select } from '@material-ui/core';
+import React from "react";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import Button from "@material-ui/core/Button";
 
-import { makeStyles } from '@material-ui/core/styles';
-import CountrySelect from './Country';
+import FormikField from "../FormikField/FormikField";
+import FormikSelect from "../FormikSelect/FormikSelect";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: '25ch',
-    },
+
+const initialValues = {
+  name: "",
+  username: '',
+  password: '',
+  email: '',
+  contact: '',
+  citizenship: '',
+  dateofbirth: '',
+  registrationdate: '',
+  address: '',
+  state: '',
+  country: '',
+  maritalstatus: "",
+  gender: ""
+};
+
+const genderSelect = [
+  {
+    label: "Male",
+    value: "male"
   },
-  Grid: {
-    marginTop: 10
+  {
+    label: "Female",
+    value: "female"
   },
-  Button: {
-    marginTop: 10, 
-    backgroundColor: "#eee"
-  }, 
-  Div: {
-    textAlign: "center"
+  {
+    label: "Others",
+    value: "others"
   }
-}));
+];
 
+const maritalStatus = [
+  {
+    label: "Married",
+    value: "married"
+  },
+  {
+    label: "Single",
+    value: "single"
+  },
+  {
+    label: "Divorced",
+    value: "divorced"
+  }
+];
 
-export default function SignUp() {
-  const styles = useStyles();
-  const [value, setValue] = React.useState('female');
+const emailAddresses = [
+  'test@gmail.com',
+  'test2@gmail.com',
+  'test3@gmail.com'
+];
 
-  const [age, setAge] = React.useState('');
+const lowercaseRegex = /(?=.*[a-z])/;
+const uppercaseRegex = /(?=.*[A-Z])/;
+const numericRegex = /(?=.*[0-9])/;
+const alphabetsSpaceRegex = /^[a-zA-Z ]*$/;
+const tenDigitNumber = /^\d{10}$/;
 
-  const handleAgeChange = (event) => {
-    setAge(event.target.value);
+const SignupSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, "Too Short!")
+    .required("Required"),
+  username: Yup.string()
+    .matches(alphabetsSpaceRegex, 'Only alphabets and Space allowed')
+    .min(2, "Too Short!"),
+  password: Yup.string()
+    .matches(lowercaseRegex, 'one lowercase required!')
+    .matches(uppercaseRegex, 'one uppercase required!')
+    .matches(numericRegex, 'one number required!')
+    .min(8, 'Minimum 8 characters required!')
+    .required('Required!'),
+  email: Yup.string()
+    .lowercase()
+    .email('Must be a valid email!')
+    .notOneOf(emailAddresses, 'Email already taken!')
+    .required('Required!'),
+  contact: Yup.string()
+    .matches(tenDigitNumber, '10 digits expected')
+    .required('Required!'),
+  citizenship: Yup.string().required("Required"),
+  dateofbirth: Yup.string().required("Required"),
+  registrationdate: Yup.string().required("Required"),
+  address: Yup.string().required("Required"),
+  state: Yup.string().required("Required"),
+  country: Yup.string().required("Required"),  
+  gender: Yup.string().required("Required"),
+  maritalstatus: Yup.string().required("Required"),
+});
+
+const signUp = () => {
+  const handleSubmit = (values) => {
+    alert(JSON.stringify(values));
   };
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
-  const dateNow = new Date(); // Creating a new date object with the current date and time
-  const year = dateNow.getFullYear(); // Getting current year from the created Date object
-  const monthWithOffset = dateNow.getUTCMonth() + 1; // January is 0 by default in JS. Offsetting +1 to fix date for calendar.
-  const month = // Setting current Month number from current Date object
-    monthWithOffset.toString().length < 2 // Checking if month is < 10 and pre-prending 0 to adjust for date input.
-      ? `0${monthWithOffset}`
-      : monthWithOffset;
-  const date =
-    dateNow.getUTCDate().toString().length < 2 // Checking if date is < 10 and pre-prending 0 if not to adjust for date input.
-      ? `0${dateNow.getUTCDate()}`
-      : dateNow.getUTCDate();
-
-  const materialDateInput = `${year}-${month}-${date}`; // combining to format for defaultValue or value attribute of material <TextField>
-
-  const selectId = React.createRef();
   return (
-          <div className={styles.Div}>
-          <FormControl className={styles.root}>
+    <div className="App">
+      <h1>Sign Up</h1>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+        validationSchema={SignupSchema}
+      >
+        {({ dirty, isValid }) => {
+          return (
+            <Form>
+              <div>
+                <FormikField name="name" label="Name" required />
+                <FormikField name="username" label="User Name" required />
+                <FormikField
+                  name="password"
+                  label="Password"
+                  required
+                  type="password"
+                />
+              </div>
+              <div>
+                <FormikField name="email" label="Email" required />
+                <FormikField name="contact" label="Contact Number" required />
+                <FormikField name="citizenship" label="Citizenship" required />
+              </div>
 
-            <div>
-              <TextField id="name" label="Name" helperText="Incorrect entry" />
-              <TextField id="username" label="User Name" helperText="Incorrect entry" />
-              <TextField id="password" type="password" label="Password" helperText="Incorrect entry" />
-            </div>
-            <div>
-              <TextField id="email" label="Email Address" helperText="Incorrect entry" />
-              <TextField id="contact-no" label="Contact Number" helperText="Incorrect entry" />
-              <TextField id="citizenship" label="Citizenship" />
+              <div>
+                <FormikField name="dateofbirth" label="Date of Birth" required />
+                <FormikField name="registrationdate" label="Registration Date" required />
+              </div>
 
-            </div>
-            <div>
-              <TextField id="date-of-birth" label="Date of Birth" type="date"
-                InputLabelProps={{
-                  shrink: true,
-                }} />
+              <div>
+                <FormikField name="address" label="Address" required />
+              </div>
 
-              <TextField id="registration-date" label="Registration Date" type="date"
-                defaultValue={materialDateInput}
-                disabled
-                InputLabelProps={{
-                  shrink: true,
-                }} />
-            </div>
-            <div>
-              <TextField id="address" label="Address" />
-              <TextField id="state" label="State" />
-              <CountrySelect />
-            </div>
+              <div>
+                <FormikField name="state" label="State" required />
+                <FormikField name="country" label="Country" required />
+              </div>
 
-            <div>
-             <FormLabel id="gender" component="legend">Gender</FormLabel>
-              <Select
-                labelId="gender"
-                id="demo-simple-select"
-                Ref={selectId}
-                value={age}
-                onChange={handleAgeChange}
+              <div>
+
+                <FormikSelect
+                  name="gender"
+                  items={genderSelect}
+                  label="Gender"
+                  required
+                />
+
+                <FormikSelect
+                  name="maritalstatus"
+                  items={maritalStatus}
+                  label="Marital Status"
+                  required
+                />
+              </div>
+              <Button
+                variant="contained"
+                color="primary"
+                disabled={!dirty || !isValid}
+                type="submit"
               >
-                <MenuItem value={'M'}>Male</MenuItem>
-                <MenuItem value={'F'}>Female</MenuItem>
-                <MenuItem value={'O'}>Others</MenuItem>
-              </Select>
-
-              <FormLabel id="marital-status" component="marital">Marital Status</FormLabel>
-              <Select
-                labelId="marital-status"
-                id="marital"
-                value={age}
-                onChange={handleAgeChange}
-                width = "25"
-              >
-                <MenuItem value={'M'}>Married</MenuItem>
-                <MenuItem value={'S'}>Single</MenuItem>
-              </Select>
-            </div>
-            <div>
-              <TextField id="identification-proof" label="Identification Proof Type" />
-              <TextField id="identification-proof-no" label="Document Number" />
-            </div>
-            <Button className={styles.Button}>SIGN UP</Button>
-          </FormControl>
-          </div>
+                Submit
+              </Button>
+            </Form>
+          );
+        }}
+      </Formik>
+    </div>
   );
 };
+
+export default signUp;
