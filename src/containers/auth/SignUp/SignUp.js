@@ -61,9 +61,9 @@ const emailAddresses = [
   'test3@gmail.com'
 ];
 
-const lowercaseRegex = /(?=.*[a-z])/;
-const uppercaseRegex = /(?=.*[A-Z])/;
-const numericRegex = /(?=.*[0-9])/;
+// const lowercaseRegex = /(?=.*[a-z])/;
+// const uppercaseRegex = /(?=.*[A-Z])/;
+// const numericRegex = /(?=.*[0-9])/;
 const alphabetsSpaceRegex = /^[a-zA-Z ]*$/;
 const tenDigitNumber = /^\d{10}$/;
 
@@ -96,9 +96,9 @@ const SignupSchema = Yup.object().shape({
 });
 
 const signUp = props => {
-  const handleSubmit = (values) => {
-    alert(JSON.stringify(values));
-    props.onSignUp();
+  const handleSubmit = (userDetails) => {
+    alert(JSON.stringify(userDetails));
+    props.onSignUp(userDetails);
   };
 
   return (
@@ -176,7 +176,7 @@ const signUp = props => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSignUp: () => dispatch(actions.signUp)
+    onSignUp: (userDetails) => dispatch(actions.signUp (userDetails))
   };
 };
 

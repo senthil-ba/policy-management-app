@@ -4,20 +4,11 @@ import MuiTextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 import {
     Button,
-    LinearProgress,
-    MenuItem,
-    FormControl,
-    InputLabel,
-    FormControlLabel,
-    Typography,
     Grid
 } from '@material-ui/core';
 import {
     fieldToTextField,
     TextField,
-    TextFieldProps,
-    Select,
-    Switch,
 } from 'formik-material-ui';
 import { makeStyles } from '@material-ui/core/styles';
 

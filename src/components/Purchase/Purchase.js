@@ -4,19 +4,9 @@ import MuiTextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 import {
     Button,
-    LinearProgress,
-    MenuItem,
-    FormControl,
-    InputLabel,
-    FormControlLabel,
-    Typography,
   } from '@material-ui/core';
   import {
     fieldToTextField,
-    TextField,
-    TextFieldProps,
-    Select,
-    Switch,
   } from 'formik-material-ui';
 
 function UpperCasingTextField(props) {
