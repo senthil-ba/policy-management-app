@@ -1,26 +1,28 @@
 import React from "react";
+import { connect } from 'react-redux';
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Button from "@material-ui/core/Button";
+import * as actions from '../../../store/actions/index.js';
 
 import FormikField from "../FormikField/FormikField";
 import FormikSelect from "../FormikSelect/FormikSelect";
 
 
 const initialValues = {
-  name: "",
-  username: '',
-  password: '',
-  email: '',
-  contact: '',
+  name: "Senthil",
+  username: 'senthil',
+  password: 'password',
+  email: 'test@test.com',
+  contact: '1234567890',
   citizenship: '',
-  dateofbirth: '',
-  registrationdate: '',
-  address: '',
-  state: '',
-  country: '',
-  maritalstatus: "",
-  gender: ""
+  dateofbirth: '01-01-1990',
+  registrationdate: '07-08-2020',
+  address: 'Main street',
+  state: 'Tamil Nadu',
+  country: 'India',
+  maritalstatus: "married",
+  gender: "male"
 };
 
 const genderSelect = [
@@ -73,9 +75,6 @@ const SignupSchema = Yup.object().shape({
     .matches(alphabetsSpaceRegex, 'Only alphabets and Space allowed')
     .min(2, "Too Short!"),
   password: Yup.string()
-    .matches(lowercaseRegex, 'one lowercase required!')
-    .matches(uppercaseRegex, 'one uppercase required!')
-    .matches(numericRegex, 'one number required!')
     .min(8, 'Minimum 8 characters required!')
     .required('Required!'),
   email: Yup.string()
@@ -96,9 +95,10 @@ const SignupSchema = Yup.object().shape({
   maritalstatus: Yup.string().required("Required"),
 });
 
-const signUp = () => {
+const signUp = props => {
   const handleSubmit = (values) => {
     alert(JSON.stringify(values));
+    props.onSignUp();
   };
 
   return (
@@ -174,4 +174,10 @@ const signUp = () => {
   );
 };
 
-export default signUp;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSignUp: () => dispatch(actions.signUp)
+  };
+};
+
+export default connect(null, mapDispatchToProps) (signUp);
