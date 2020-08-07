@@ -1,118 +1,80 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
-import MuiTextField from '@material-ui/core/TextField';
-import Box from '@material-ui/core/Box';
-import {
-    Button,
-    Grid
-} from '@material-ui/core';
-import {
-    fieldToTextField,
-    TextField,
-} from 'formik-material-ui';
-import { makeStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+import { Formik, Form } from 'formik';
+import * as Yup from "yup";
+import { Grid, Button, Box } from "@material-ui/core";
+import FormikField from "../FormikField/FormikField";
+import * as actions from '../../../store/actions/index';
 
-const useStyles = makeStyles({
-    Button: {
-        marginTop: 10,
-        backgroundColor: "#eee"
-    }, 
-    FormControl: {
-        margin: "20px 20px 20px 20px",
-        boxShadow: "0 2px 3px #ccc", 
-        border: "1px solid #eee",
-        padding: "10px", 
-        boxSizing: "border-box", 
-        textAlign: "center"        
-    },
-    Div: {
-        padding: "20px 20px 20px 20px",
-        width: "60%",
-        textAlign: "center",
-    }
-});
-
-function UpperCasingTextField(props) {
-    const {
-        form: { setFieldValue },
-        field: { name },
-    } = props;
-    const onChange = React.useCallback(
-        event => {
-            const { value } = event.target;
-            setFieldValue(name, value ? value.toUpperCase() : '');
-        },
-        [setFieldValue, name]
-    );
-    return <MuiTextField {...fieldToTextField(props)} onChange={onChange} />;
-}
-
-const Purchase = () => {
-    const styles = useStyles();
-    return (
-    <Formik
-        initialValues={{
-            email: '',
-        }}
-        validate={values => {
-            console.log(values);
-            const errors = {};
-            if (!values.email) {
-                errors.email = 'Required';
-            } else if (
-                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-            ) {
-                errors.email = 'Invalid email address';
-            }
-            return errors;
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-                setSubmitting(false);
-                alert(JSON.stringify(values, null, 2));
-            }, 500);
-        }}
-        render={({ submitForm, isSubmitting, touched, errors }) => (
-            <Grid container>
-            <Grid item xs="1" sm="3" />
-            <Grid item xs="10" sm="6">
-                
-            <Form className={styles.FormControl}>
-                <Box margin={1}>
-                    <Field
-                        component={UpperCasingTextField}
-                        name="email"
-                        type="email"
-                        label="Email"
-                    />
-                </Box>
-                <Box margin={1}>
-                    <Field
-                        component={TextField}
-                        type="password"
-                        label="Password"
-                        name="password"
-                    />
-                </Box>
-                <Box margin={1}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        disabled={isSubmitting}
-                        onClick={submitForm}
-                    >
-                        Submit
-                        </Button>
-                </Box>
-            </Form>
-            
-            </Grid>
-            <Grid item xs="1" sm="3" />
-            </Grid>
-            
-        )}
-    />
-)
+const initialValues = {
+    username: '',
+    password: ''
 };
 
-export default Purchase; 
+const SignupSchema = Yup.object().shape({
+    username: Yup.string().required("Required"),
+    password: Yup.string().required("Required")
+});
+
+const login = (props) => {
+    const handleSubmit = (credentials) => {
+        alert(JSON.stringify(credentials));
+        props.onSignIn(credentials.username, credentials.password);
+    };
+
+    return (
+        <div style={{textAlign : "center"}}>
+            <h1>Sign In</h1>
+            <Formik
+                initialValues={initialValues}
+                onSubmit={handleSubmit}
+                validationSchema={SignupSchema}
+            >
+                {({ dirty, isValid }) => {
+                    return (
+                        <Grid container>
+                            <Grid item xs={1} sm={3} />
+                            <Grid item xs={10} sm={6}>
+                                <Form>
+                                    <Box margin={1}>
+                                        <div>
+                                            <FormikField name="username" label="User Name" required />
+                                        </div>
+                                    </Box>
+                                    <Box margin={1}>
+                                        <FormikField
+                                            name="password"
+                                            label="Password"
+                                            required
+                                            type="password"
+                                        />
+                                    </Box>
+                                    <Box margin={1}>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            disabled={!dirty || !isValid}
+                                            type="submit"
+                                        >
+                                            Submit
+                                        </Button>
+                                    </Box>
+                                </Form>
+                            </Grid>
+                            <Grid item xs={1} sm={3} />
+                        </Grid>
+                    );
+                }}
+            </Formik>
+        </div>
+    )
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onSignIn: (username, password) => dispatch(actions.signIn(username, password))
+    }
+
+};
+
+export default connect(null, mapDispatchToProps)(login);

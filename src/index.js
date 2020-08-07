@@ -8,8 +8,9 @@ import * as serviceWorker from './serviceWorker';
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import createSagaMiddleware from "redux-saga";
 import authReducer from './store/reducers/authReducer';
+import policyReducer from './store/reducers/policyReducer';
 import thunk from 'redux-thunk';
-import {watchAuth} from './store/sagas';
+import {watchAuth, watchPolicy} from './store/sagas';
 
 
 const composeEnhancers = 
@@ -18,7 +19,8 @@ const composeEnhancers =
   : null || compose;
 
 const rootReducers = combineReducers({
-  auth: authReducer
+  auth: authReducer,
+  policy: policyReducer
 });
 
 const sagaMiddlware = createSagaMiddleware();
@@ -29,6 +31,7 @@ const store = createStore(
 );
 
 sagaMiddlware.run(watchAuth);
+sagaMiddlware.run(watchPolicy);
 
 ReactDOM.render(
 

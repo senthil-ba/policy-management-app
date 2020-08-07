@@ -102,7 +102,7 @@ const signUp = props => {
   };
 
   return (
-    <div className="App">
+    <div style={{textAlign : "center"}}>
       <h1>Sign Up</h1>
       <Formik
         initialValues={initialValues}

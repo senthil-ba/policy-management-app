@@ -1,8 +1,8 @@
 import * as actionTypes from '../actions/actionTypes'; 
 
 const initialState = {
-    userDetails: null
-};
+    policyDetails: null
+}
 
 const updateObject = (oldObject, updatedProperties) => {
     return {
@@ -11,22 +11,15 @@ const updateObject = (oldObject, updatedProperties) => {
     }
 };
 
-const signUpSuccess = (state, action) => {
-    const updatedUserDetails = updateObject(state.userDetails, action.userDetails);
+const purchaseSuccess = (state, action) => {
 
+    console.log('Inside purchase success');
+    console.log('purchase details', action.policyDetails);
+    const updatedPolicyDetails = updateObject(state.policyDetails, action.policyDetails);
     const updatedState = {
-        userDetails: updatedUserDetails
+        policyDetails: updatedPolicyDetails
     }
-    console.log('In reducer');
-    console.log(JSON.stringify(action.userDetails));
     return updateObject(state, updatedState);
-
-};
-
-const signInSuccess = (state, action) => {
-    console.log('Inside signin success');
-    return state;
-
 };
 
 const reducer = (state = initialState, action) => {
@@ -34,8 +27,8 @@ const reducer = (state = initialState, action) => {
     console.log(action.type); 
     console.log(JSON.stringify(action.userDetails));
     switch (action.type) {
-        case actionTypes.SIGNUP_SUCCESS: return signUpSuccess(state,action);
-        case actionTypes.SIGNIN_SUCCESS: return signInSuccess(state,action);
+        case actionTypes.PURCHASE_POLICY_SUCCESS: return purchaseSuccess(state,action);
+
         default: 
             return state;
     }

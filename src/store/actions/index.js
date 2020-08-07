@@ -1,4 +1,10 @@
 export {
     signUp,
-    signUpSucceed
+    signUpSucceed,
+    signIn
 } from './auth';
+
+export {
+    purchasePolicy,
+    purchasePolicySuccess
+} from './policy';

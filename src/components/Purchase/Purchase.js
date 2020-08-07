@@ -1,75 +1,76 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
-import MuiTextField from '@material-ui/core/TextField';
-import Box from '@material-ui/core/Box';
-import {
-    Button,
-  } from '@material-ui/core';
-  import {
-    fieldToTextField,
-  } from 'formik-material-ui';
+import * as Yup from "yup";
+import { Formik, Form } from 'formik';
+import { Button, Box } from '@material-ui/core';
+import FormikField from '../../containers/auth/FormikField/FormikField';
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/index';
 
-function UpperCasingTextField(props) {
-    const {
-      form: {setFieldValue},
-      field: {name},
-    } = props;
-    const onChange = React.useCallback(
-      event => {
-        const {value} = event.target;
-        setFieldValue(name, value ? value.toUpperCase() : '');
-      },
-      [setFieldValue, name]
-    );
-    return <MuiTextField {...fieldToTextField(props)} onChange={onChange} />;
-  }
+const initialValues = {
+    policyName: '',
+    policyAmount: '',
+    policyTenure: '',
+    policyStartDate: '07-08-2020'
+};
 
-const Purchase = () => (
-        <Formik
-            initialValues={{
-                email: '',
-            }}
-            validate={values => {
-                console.log(values);
-                const errors = {};
-                if (!values.email) {
-                    errors.email = 'Required';
-                } else if (
-                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-                ) {
-                    errors.email = 'Invalid email address';
-                }
-                return errors;
-            }}
-            onSubmit={(values, { setSubmitting }) => {
-                setTimeout(() => {
-                    setSubmitting(false);
-                    alert(JSON.stringify(values, null, 2));
-                }, 500);
-            }}
-            render={({ submitForm, isSubmitting, touched, errors }) => (
-                <Form>
-                    <Box margin={1}>
-                        <Field
-                            component={UpperCasingTextField}
-                            name="email"
-                            type="email"
-                            label="Email"
-                        />
-                    </Box>
-                    <Box margin={1}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            disabled={isSubmitting}
-                            onClick={submitForm}
-                        >
-                            Submit
-                        </Button>
-                    </Box>
-                </Form>
-            )}
-        />    
-);
+const policySchema = Yup.object().shape({
+    policyName: Yup.string().required("Required"),
+    policyAmount: Yup.string().required("Required"),
+    policyTenure: Yup.string().required("required"),
+    policyStartDate: Yup.string().required("required")
+});
 
-export default Purchase; 
+const purchase = (props) => {
+
+    const handleSubmit = (policyDetails) => {
+        alert(JSON.stringify(policyDetails));
+        props.onPurchase(policyDetails);
+    }
+
+    return (
+        <div style={{textAlign : "center"}}>
+            <h1>Policy Purchase</h1>
+            <Formik
+                initialValues={initialValues}
+                onSubmit={handleSubmit}
+                validationSchema={policySchema}
+            >
+                {({ dirty, isValid }) => {
+                    return (
+                        <Form>
+                            <Box margin={1}>
+                                <FormikField name="policyName" label="Policy Name" required />
+                            </Box>
+                            <Box margin={1}>
+                                <FormikField name="policyAmount" label="Policy Amount" required />
+                            </Box>
+                            <Box margin={1}>
+                                <FormikField name="policyTenure" label="Policy Tenure" required />
+                            </Box>
+                            <Box margin={1}>
+                                <FormikField name="policyStartDate" label="Policy StartDate" required />
+                            </Box>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                disabled={!dirty || !isValid}
+                                type="Purchase"
+                            >
+                                Submit
+                </Button>
+                        </Form>
+                    );
+                }}
+            </Formik>
+        </div>
+    )
+
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onPurchase: policyDetails => dispatch(actions.purchasePolicy(policyDetails))
+    };
+};
+
+export default connect(null, mapDispatchToProps)(purchase);

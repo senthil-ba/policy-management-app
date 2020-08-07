@@ -44,3 +44,41 @@ export function* signUpSaga(action) {
     }
 }
 
+
+export function* signInSaga (action) {
+    const userlookupUrl = "https://policy-management-app-97345.firebaseio.com/userLookup.json";
+    const queryParams = '?orderBy="username"&equalTo="' + action.username + '"';
+    const lookupUrl = userlookupUrl + queryParams;
+    console.log(lookupUrl);
+
+    const signInUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA52UmrfJZWgm5etszmAwZnw246lVplDy0";
+
+
+    try {
+        const userResponse = yield axios.get(lookupUrl);
+        console.log(userResponse);
+
+        if(Object.entries(userResponse.data).length > 0) {
+            console.log('Inside if loop');
+            let userResponseObject;
+            for(let key in userResponse.data) {
+                userResponseObject = userResponse.data[key];
+            }
+            console.log('email', userResponseObject['email']);
+
+            const credentials = {
+                email: userResponseObject['email'],
+                password: action.password
+            };
+            const response = yield axios.post(signInUrl, credentials);
+            console.log(response);
+
+        } else {
+            alert('No such user');
+        }       
+
+    } catch(error) {
+        alert(error);
+    }
+
+}
