@@ -16,11 +16,11 @@ export default function Services() {
         <React.Fragment >
             <h3 className={styles.H3}>Services</h3>
             <Grid container>
-                <Grid item xs="4" />
-                <Grid item xs="4">
+                <Grid item xs={4} />
+                <Grid item xs={4}>
                     <PurchaseCard ></PurchaseCard>
                 </Grid>
-                <Grid item xs="4" />
+                <Grid item xs={4} />
             </Grid>
         </React.Fragment>
     );

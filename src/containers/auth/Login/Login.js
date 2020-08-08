@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form } from 'formik';
+import { Redirect } from 'react-router-dom';
 import * as Yup from "yup";
-import { Grid, Button, Box } from "@material-ui/core";
+import { Grid, Button, Box, CircularProgress } from "@material-ui/core";
 import FormikField from "../FormikField/FormikField";
 import * as actions from '../../../store/actions/index';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 
 const initialValues = {
     username: '',
@@ -21,10 +23,11 @@ const login = (props) => {
         alert(JSON.stringify(credentials));
         props.onSignIn(credentials.username, credentials.password);
     };
+    
+    let form = <CircularProgress />
 
-    return (
-        <div style={{textAlign : "center"}}>
-            <h1>Sign In</h1>
+    if(!props.loading) {
+        form = (
             <Formik
                 initialValues={initialValues}
                 onSubmit={handleSubmit}
@@ -65,10 +68,41 @@ const login = (props) => {
                         </Grid>
                     );
                 }}
-            </Formik>
+            </Formik>);
+    }
+
+    let errorMessage = null; 
+
+    if(props.error) {
+        errorMessage = (
+            <p>{props.error.message}</p>
+        )
+    }
+
+    let authRedirect = null; 
+
+    if(props.isAuthenticated) {
+        authRedirect = <Redirect to={props.authRedirectPath} />
+    }
+
+    return (
+        <div style={{textAlign : "center"}}>
+            <h1>Sign In</h1>
+            {authRedirect}
+            {errorMessage}
+            {form}
         </div>
     )
 };
+
+const mapStateToProps = state => {
+    return {
+        loading: state.auth.loading,
+        error: state.auth.error,
+        isAuthenticated: state.auth.token !== null, 
+        authRedirectPath: state.auth.authRedirectPath
+    };
+}
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -77,4 +111,4 @@ const mapDispatchToProps = (dispatch) => {
 
 };
 
-export default connect(null, mapDispatchToProps)(login);
+export default connect(mapStateToProps, mapDispatchToProps)(login);

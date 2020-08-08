@@ -3,7 +3,7 @@ import {put} from 'redux-saga/effects';
 import * as actions from '../actions/index';
 
 export function* signUpSaga(action) {
-    yield console.log('Inside saga');
+    yield put(actions.signUpStart);
 
     const authData = {
         email: action.userDetails.email,
@@ -30,55 +30,64 @@ export function* signUpSaga(action) {
         console.log(Object.entries(userResponse.data).length);
         if(Object.entries(userResponse.data).length === 0) {
             console.log('inside if loop');
-            yield axios.post(signUpUrl, authData);
+            const response = yield axios.post(signUpUrl, authData);
+
+            const expirationDate = yield new Date(
+                new Date().getTime() + response.data.expiresIn * 1000
+            );
+
+            yield localStorage.setItem("token", response.data.idToken); 
+            yield localStorage.setItem("expirationDate", expirationDate); 
+            yield localStorage.setItem("userId", response.data.localId);
+
             yield axios.post(userlookupUrl, userLookupData);
             yield axios.post(userDetailsUrl, action.userDetails);
             console.log('Before closing if loop');
-            yield put(actions.signUpSucceed(action.userDetails));
-
+            yield put(actions.signUpSucceed(response.data.idToken, response.data.localId));
+        } else {
+            yield put(actions.signUpFail('User is already present. Please use different user/email id'));
         }
-        console.log('response data');
     } catch (error) {
-        console.log("Error occurred");
         console.log(error);
+        yield put(actions.signUpFail(error.response.data.error));
     }
 }
 
 
 export function* signInSaga (action) {
+    yield put(actions.signInStart);
     const userlookupUrl = "https://policy-management-app-97345.firebaseio.com/userLookup.json";
     const queryParams = '?orderBy="username"&equalTo="' + action.username + '"';
     const lookupUrl = userlookupUrl + queryParams;
-    console.log(lookupUrl);
-
     const signInUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA52UmrfJZWgm5etszmAwZnw246lVplDy0";
-
-
     try {
         const userResponse = yield axios.get(lookupUrl);
-        console.log(userResponse);
-
         if(Object.entries(userResponse.data).length > 0) {
-            console.log('Inside if loop');
             let userResponseObject;
             for(let key in userResponse.data) {
                 userResponseObject = userResponse.data[key];
             }
-            console.log('email', userResponseObject['email']);
-
             const credentials = {
                 email: userResponseObject['email'],
-                password: action.password
+                password: action.password,
+                returnSecureToken: true
             };
             const response = yield axios.post(signInUrl, credentials);
-            console.log(response);
 
+            const expirationDate = yield new Date(
+                new Date().getTime() + response.data.expiresIn * 1000
+            );
+
+            yield localStorage.setItem("token", response.data.idToken); 
+            yield localStorage.setItem("expirationDate", expirationDate); 
+            yield localStorage.setItem("userId", response.data.localId);
+            yield put(
+                actions.signInSuccess(response.data.idToken, response.data.localId)
+            );
         } else {
-            alert('No such user');
-        }       
-
+            yield put(actions.signInFail('No such User'));
+        }
     } catch(error) {
-        alert(error);
+        yield put(actions.signInFail(error.response.data.error));
     }
-
 }

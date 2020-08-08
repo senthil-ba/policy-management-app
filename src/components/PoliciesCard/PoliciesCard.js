@@ -27,7 +27,7 @@ export default function MediaCard() {
         <CardMedia
           className={classes.media}
           image={policyImage}
-          title="Contemplative Reptile"
+          title="Policy Details"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">

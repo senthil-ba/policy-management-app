@@ -23,25 +23,27 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Policy() {
+export default function Policy(props) {
+  console.log('Inside Policy component'); 
+  console.log(props.policyDetails);
   const classes = useStyles();
 
   return (
-    <Card className={classes.root} variant="outlined">
+    <Card key={props.policyDetails.id} className={classes.root} variant="outlined">
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
           Policy Details
         </Typography>
         <Typography variant="h5" component="h2">
-          Policy Type: Term Insurance
+          Policy Type: {props.policyDetails.policyName}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          Policy Amount
+          Policy Amount: { props.policyDetails.policyAmount }
         </Typography>
         <Typography variant="body2" component="p">
-          Policy Tenure
+          Policy Tenure: { props.policyDetails.policyTenure }
           <br />
-          {'Policy Registration'}
+          Policy Registration: { props.policyDetails.policyStartDate }
         </Typography>
       </CardContent>
       <CardActions>
