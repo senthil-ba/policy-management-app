@@ -10,7 +10,15 @@ export {
     checkAuthTimeout,
     logout,
     logoutSuccess,
-    authCheckState
+    authCheckState, 
+    updateUser,
+    updateUserStart,
+    updateUserSuccess,
+    updateUserFail,
+    fetchUser,
+    fetchUserSuccess,
+    fetchUserStart,
+    fetchUserFail
 } from './auth';
 
 export {

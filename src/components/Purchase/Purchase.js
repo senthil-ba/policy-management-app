@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import { Formik, Form } from 'formik';
 import { Button, Box, CircularProgress } from '@material-ui/core';
 import CustomModal from '../UI/CustomModal/CustomModal';
-import FormikField from '../../containers/auth/FormikField/FormikField';
+import FormikField from '../FormikField/FormikField';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import * as actions from '../../store/actions/index';

@@ -56,11 +56,13 @@ export function* signUpSaga(action) {
             yield localStorage.setItem("token", response.data.idToken); 
             yield localStorage.setItem("expirationDate", expirationDate); 
             yield localStorage.setItem("userId", response.data.localId);
+            yield localStorage.setItem("username", action.userDetails.username);
 
             yield axios.post(userlookupUrl, userLookupData);
             yield axios.post(userDetailsUrl, action.userDetails);
+
             console.log('Before closing if loop');
-            yield put(actions.signUpSucceed(response.data.idToken, response.data.localId));
+            yield put(actions.signUpSucceed(response.data.idToken, response.data.localId, action.userDetails.username));
         } else {
             yield put(actions.signUpFail('User is already present. Please use different user/email id'));
         }
@@ -104,8 +106,9 @@ export function* signInSaga (action) {
                 yield localStorage.setItem("token", response.data.idToken); 
                 yield localStorage.setItem("expirationDate", expirationDate); 
                 yield localStorage.setItem("userId", response.data.localId);
+                yield localStorage.setItem("username", action.username);
                 yield put(
-                    actions.signInSuccess(response.data.idToken, response.data.localId)
+                    actions.signInSuccess(response.data.idToken, response.data.localId, action.username)
                 );
             } catch(error) {
                 console.log('New error'); 
@@ -116,6 +119,7 @@ export function* signInSaga (action) {
             throw new Error("No Such User");
         }
     } catch(error) {  
+        
         yield put(actions.signInFail(error));
     }
 };
@@ -131,7 +135,8 @@ export function* authCheckStateSaga(action) {
             yield put(actions.logout);
         } else {
             const userId = yield localStorage.getItem("userId"); 
-            yield put(actions.signInSuccess(token, userId)); 
+            const username = yield localStorage.getItem("username"); 
+            yield put(actions.signInSuccess(token, userId, username)); 
             yield put (
                 actions.checkAuthTimeout(
                  (expirationDate.getTime() - new Date().getTime()) / 1000   
@@ -140,3 +145,46 @@ export function* authCheckStateSaga(action) {
         }
     }
 };
+
+export function* updateUserSaga(action) {
+    const token = yield localStorage.getItem("token"); 
+    const userId = yield localStorage.getItem("userId"); 
+    yield put(actions.updateUserStart);
+    const userDetailsUrl = "https://policy-management-app-97345.firebaseio.com/userDetails.json";
+    const queryParams = '?orderBy="username"&equalTo="' + action.username + '"';
+    try {
+        yield axios.put(userDetailsUrl+queryParams, action.userDetails);
+        yield put(actions.updateUserSuccess(token, userId, action.username));
+    } catch(error) {
+        console.log(error);
+        yield put(actions.updateUserFail(error));
+    }
+}
+
+export function* fetchUserSaga(action) {
+    yield put(actions.fetchUserStart);
+    const token = yield localStorage.getItem("token"); 
+    const userId = yield localStorage.getItem("userId"); 
+    console.log(token, userId);
+
+    const userDetailsUrl = "https://policy-management-app-97345.firebaseio.com/userDetails.json";
+    const queryParams = '?orderBy="username"&equalTo="' + action.username + '"';
+    try {
+        const response = yield axios.get(userDetailsUrl + queryParams);
+        console.log(response);
+
+        const fetchedUserDetails = [];
+        for (let key in response.data) {
+            fetchedUserDetails.push({
+                ...response.data[key],
+                id: key
+            });
+        }
+        console.log('Fetched User details', fetchedUserDetails);
+
+        yield put(actions.fetchUserSuccess(fetchedUserDetails));
+    } catch(error) {
+        yield put(actions.fetchUserFail);
+    }   
+
+}

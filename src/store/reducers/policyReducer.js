@@ -35,8 +35,9 @@ const fetchPoliciesStart = (state, action) => {
 
 const fetchPoliciesSuccess = (state, action) => {
     console.log('Inside fetch policies');
+    const updatedPoliciesDetails = {...action.policiesDetails};
     return updateObject(state, {
-        policiesDetails: action.policiesDetails,
+        policiesDetails: updatedPoliciesDetails,
         loading: false,
         purchased: false
     });

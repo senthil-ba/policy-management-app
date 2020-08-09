@@ -6,6 +6,7 @@ import SignUp from './containers/auth/SignUp/SignUp';
 import Dashboard from './containers/Dashboard/Dashboard';
 import PolicyList from './containers/PolicyList/PolicyList';
 import Purchase from './components/Purchase/Purchase';
+import UserDetails from './containers/auth/UserDetails/UserDetails';
 import * as actions from './store/actions/index';
 import { connect } from 'react-redux';
 
@@ -31,6 +32,7 @@ const App = props => {
       <Switch>
         <Route path="/purchase" component={Purchase} />
         <Route path="/policy" component={PolicyList} />
+        <Route path="/updateprofile" component={UserDetails} />
         <Route path="/signup" component={SignUp} />
         <Route path="/logout" component={Logout} />
         <Route path="/home" component={Dashboard} />

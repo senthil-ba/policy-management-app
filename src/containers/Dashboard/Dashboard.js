@@ -10,11 +10,10 @@ const Dashboard = (props) => {
     useEffect(() => {
         onFetchPolicies(token, userId);
     }, [onFetchPolicies, token, userId]);
-    console.log('........Loading dashboard');
-    console.log('Policies details', props.policiesDetails.length)
+    const length = props.policiesDetails ? props.policiesDetails.length : 'NIL';
     return (
         <div>            
-            <Policies policies={props.policiesDetails.length}></Policies>
+            <Policies policies={length}></Policies>
             <Services></Services>
             <br />
         </div>

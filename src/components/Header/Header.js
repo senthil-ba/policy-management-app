@@ -54,7 +54,7 @@ export default function Header(props) {
                         open={open}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={handleClose} component={Link} to="/home">Profile</MenuItem>
+                        <MenuItem onClick={handleClose} component={Link} to="/updateprofile">Profile</MenuItem>
                         <MenuItem onClick={handleClose} component={Link} to="/logout">Logout</MenuItem>
                     </Menu>
                 </div>
