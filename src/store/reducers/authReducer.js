@@ -62,10 +62,11 @@ const signInFail = (state, action) => {
     });
 };
 
+const authLogout = (state, action) => {
+    return updateObject(state, { token: null, userId: null });
+};
+
 const reducer = (state = initialState, action) => {
-    console.log('inside reducer'); 
-    console.log(action.type); 
-    console.log(JSON.stringify(action.userDetails));
     switch (action.type) {
         case actionTypes.SIGNUP_START: return signUpStart(state,action);
         case actionTypes.SIGNUP_SUCCESS: return signUpSuccess(state,action);
@@ -74,6 +75,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.SIGNIN_START: return signInStart(state,action);
         case actionTypes.SIGNIN_SUCCESS: return signInSuccess(state,action);
         case actionTypes.SIGNIN_FAIL: return signInFail(state,action);
+        case actionTypes.AUTH_LOGOUT: return authLogout(state,action);
 
         default: 
             return state;

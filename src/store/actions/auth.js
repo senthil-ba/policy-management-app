@@ -52,8 +52,36 @@ export const signInSuccess = (token, userId) => {
 }
 
 export const signInFail = error => {
+
+    console.log('Inside signin fail action'); 
+    console.log(error);
     return {
         type: actionTypes.SIGNIN_FAIL,
         error: error      
     }
+};
+
+export const checkAuthTimeout = expirationTime => {
+    return {
+        type: actionTypes.AUTH_CHECK_TIMEOUT, 
+        expirationTime: expirationTime
+    }
+};
+
+export const logout = () => {
+    return {
+        type: actionTypes.AUTH_INITIATE_LOGOUT
+    };
+};
+
+export const logoutSuccess = () => {
+    return {
+        type: actionTypes.AUTH_LOGOUT
+    }
+}
+
+export const authCheckState = () => {
+    return {
+        type: actionTypes.AUTH_CHECK_STATE
+    } 
 };

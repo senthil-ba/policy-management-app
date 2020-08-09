@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
 import PurchaseImage from '../../../assets/images/purchase.jpg';
+import { useHistory } from 'react-router-dom'; 
 
 const images = [
   {
@@ -88,6 +89,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ButtonBases() {
   const classes = useStyles();
+  const history = useHistory();
+
+  const redirectToPurchase = () => {
+    history.replace('/purchase');
+  }
 
   return (
     <div className={classes.root}>
@@ -100,6 +106,7 @@ export default function ButtonBases() {
           style={{
             width: image.width,
           }}
+          onClick={redirectToPurchase}
         >
           <span
             className={classes.imageSrc}

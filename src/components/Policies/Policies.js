@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Policies() {
+export default function Policies(props) {
     const styles = useStyles();
     return (
         <React.Fragment >
@@ -18,7 +18,7 @@ export default function Policies() {
             <Grid container>
                 <Grid item xs={4} />
                 <Grid item xs={4}>
-                    <PoliciesCard ></PoliciesCard>
+                    <PoliciesCard policiesCount={props.policies}></PoliciesCard>
                 </Grid>
                 <Grid item xs={4} />
             </Grid>

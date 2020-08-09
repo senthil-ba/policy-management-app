@@ -2,10 +2,13 @@ import React from "react";
 import { connect } from 'react-redux';
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Button from "@material-ui/core/Button";
+import Link from '@material-ui/core/Link';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import * as actions from '../../../store/actions/index.js';
+import CustomModal from '../../../components/UI/CustomModal/CustomModal';
+import { useHistory } from 'react-router-dom';
 
 import FormikField from "../FormikField/FormikField";
 import FormikSelect from "../FormikSelect/FormikSelect";
@@ -97,11 +100,18 @@ const SignupSchema = Yup.object().shape({
   maritalstatus: Yup.string().required("Required"),
 });
 
-const signUp = props => {
+const SignUp = props => {
+
+  const history = useHistory();
+  const [open, setOpen] = React.useState(false);
   const handleSubmit = (userDetails) => {
     alert(JSON.stringify(userDetails));
     props.onSignUp(userDetails);
   };
+
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
 
   let form = <CircularProgress />
 
@@ -174,30 +184,36 @@ const signUp = props => {
     </Formik>);
   }
 
-  let errorMessage = null;
-
-  if (props.error) {
-    errorMessage = (
-      <p>{props.error.message}</p>
-    )
-  }
-
-  
+  const handleClose = () => {
+    history.replace('/');
+  };
 
   let authRedirect = null;
 
   console.log(JSON.stringify(props));
   console.log('isAuthenticated', props.isAuthenticated);
+
+  const content = 'Registration is Successful with given username and password. Click anywhere to go to homepage';
   if (props.isAuthenticated) {
     console.log('inside authentication');
-    authRedirect = <Redirect to={props.authRedirectPath} />
+    // authRedirect = <Redirect to={props.authRedirectPath} />
+
+    authRedirect = <CustomModal content={content} open={props.isAuthenticated} handleClose={handleClose} />;
+
+    // authRedirect = (<React.Fragment><Modal
+    //   open={open}
+    //   onClose={handleClose}
+    //   aria-labelledby="simple-modal-title"
+    //   aria-describedby="simple-modal-description"
+    // >
+    //   Successfully Registered. Login now to access the application.
+    // </Modal></React.Fragment>)
   }
 
   return (
     <div style={{ textAlign: "center" }}>
       <h1>Sign Up</h1>
       {authRedirect}
-      {errorMessage}
       {form}
     </div>
   );
@@ -218,4 +234,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(signUp);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

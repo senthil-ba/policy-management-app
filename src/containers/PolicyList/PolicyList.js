@@ -5,12 +5,12 @@ import { Grid, Typography, CircularProgress } from '@material-ui/core';
 import * as actions from '../../store/actions/index';
 
 const PolicyList = (props) => {
-    const { onFetchPolicies } = props;
+    const { onFetchPolicies, token, userId } = props;
 
     useEffect(() => {
         console.log('inside use effect');
-        onFetchPolicies();
-    }, [onFetchPolicies]);
+        onFetchPolicies(token, userId);
+    }, [onFetchPolicies, token, userId]);
 
 
         let policyList = <CircularProgress />;
@@ -42,13 +42,15 @@ const PolicyList = (props) => {
 const mapStateToProps = state => {
     return {
         policiesDetails: state.policy.policiesDetails,
-        loading: state.policy.loading
+        loading: state.policy.loading,
+        token: state.auth.token,
+        userId: state.auth.userId
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchPolicies: () => dispatch(actions.fetchPolicies())
+        onFetchPolicies: (token, userId) => dispatch(actions.fetchPolicies(token, userId))
     };
 };
 

@@ -2,10 +2,12 @@ import React from 'react';
 import * as Yup from "yup";
 import { Formik, Form } from 'formik';
 import { Button, Box, CircularProgress } from '@material-ui/core';
+import CustomModal from '../UI/CustomModal/CustomModal';
 import FormikField from '../../containers/auth/FormikField/FormikField';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import * as actions from '../../store/actions/index';
+
 
 const initialValues = {
     policyName: '',
@@ -21,18 +23,22 @@ const policySchema = Yup.object().shape({
     policyStartDate: Yup.string().required("required")
 });
 
-const purchase = (props) => {
+const Purchase = (props) => {
+    const [open, setOpen] = React.useState(true);
+    const history = useHistory();
+    const handleClose = () => {
+        setOpen(!open);
+        history.replace('/home');
+    };
 
     const handleSubmit = (policyDetails) => {
-        alert(JSON.stringify(policyDetails));
-        console.log(props.userId);
-        const updatedPolicyDetails = {...policyDetails, userId: props.userId};
-        props.onPurchase(updatedPolicyDetails);
+        const updatedPolicyDetails = { ...policyDetails, userId: props.userId };
+        props.onPurchase(updatedPolicyDetails, props.token);
     }
 
     let form = <CircularProgress />;
 
-    if(!props.loading) {
+    if (!props.loading && !props.purchased) {
         form = (<Formik
             initialValues={initialValues}
             onSubmit={handleSubmit}
@@ -65,14 +71,17 @@ const purchase = (props) => {
                 );
             }}
         </Formik>);
+    } else {
+        const content = 'Hurry!!! Policy Purchase is Successful!!!';
+        form = <CustomModal content={content}  open={open && props.purchased}  handleClose={handleClose} />;
     }
 
-    const purchasedRedirect = props.purchased ? <Redirect to="/home" /> : null;
+    // const purchasedRedirect = props.purchased ? <Redirect to="/home" /> : null;
     return (
-        <div style={{textAlign : "center"}}>
-            {purchasedRedirect}
+        <div style={{ textAlign: "center" }}>
             <h1>Policy Purchase</h1>
             {form}
+            <br />
         </div>
     );
 };
@@ -81,14 +90,15 @@ const mapStateToProps = state => {
     return {
         loading: state.policy.loading,
         purchased: state.policy.purchased,
-        userId: state.auth.userId
+        userId: state.auth.userId,
+        token: state.auth.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onPurchase: policyDetails => dispatch(actions.purchasePolicy(policyDetails))
+        onPurchase: (policyDetails, token) => dispatch(actions.purchasePolicy(policyDetails, token))
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(purchase);
+export default connect(mapStateToProps, mapDispatchToProps)(Purchase);

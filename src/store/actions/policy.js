@@ -1,9 +1,10 @@
 import * as actionTypes from './actionTypes';
 
-export const purchasePolicy = (policyDetails) => {
+export const purchasePolicy = (policyDetails, token) => {
     return {
         type: actionTypes.PURCHASE_POLICY,
-        policyDetails: policyDetails
+        policyDetails: policyDetails,
+        token: token
     };
 };
 
@@ -27,9 +28,11 @@ export const purchasePolicyFail = error => {
     };
 }
 
-export const fetchPolicies = () => {
+export const fetchPolicies = (token, userId) => {
     return {
-        type: actionTypes.FETCH_POLICIES
+        type: actionTypes.FETCH_POLICIES,
+        token: token,
+        userId: userId
     };
 };
 

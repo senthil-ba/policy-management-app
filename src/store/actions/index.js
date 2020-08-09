@@ -6,7 +6,11 @@ export {
     signIn,
     signInStart,
     signInSuccess,
-    signInFail
+    signInFail,
+    checkAuthTimeout,
+    logout,
+    logoutSuccess,
+    authCheckState
 } from './auth';
 
 export {

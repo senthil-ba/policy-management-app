@@ -2,14 +2,15 @@ import React from 'react';
 
 import Header from '../../components/Header/Header';
 import { Grid } from '@material-ui/core';
+import { connect } from 'react-redux';
 
-export default function Layout(props) {
+const Layout = (props) => {
     return (
         <React.Fragment>
             <div style={{ backgroundColor: '#cfe8fc', minHeight: '700px'}}>
                 <Grid container direction="column">
                     <Grid item>
-                        <Header signUp={props.signup} />
+                        <Header isAuth={props.isAuthenticated}/>
                     </Grid>
                     <Grid item container>
                         <Grid item xs={false} sm={2} />
@@ -25,3 +26,11 @@ export default function Layout(props) {
         </React.Fragment>
     );
 };
+
+const mapStateToProps = state => {
+    return {
+        isAuthenticated: state.auth.token !== null
+    }
+};
+
+export default connect(mapStateToProps, null) (Layout);

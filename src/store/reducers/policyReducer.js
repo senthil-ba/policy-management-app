@@ -14,7 +14,7 @@ const updateObject = (oldObject, updatedProperties) => {
 };
 
 const purchasePolicyStart = (state, action) => {
-    return updateObject(state, {loading: true});
+    return updateObject(state, {loading: true, purchased: false});
 }
 
 const purchasePolicySuccess = (state, action) => {
@@ -26,23 +26,24 @@ const purchasePolicySuccess = (state, action) => {
 };
 
 const purchasePolicyFail = (state, action) => {
-    return updateObject(state, {loading: false});
+    return updateObject(state, {loading: false, purchased: false});
 }
 
 const fetchPoliciesStart = (state, action) => {
-    return updateObject(state, {loading: true});
+    return updateObject(state, {loading: true, purchased: false});
 }
 
 const fetchPoliciesSuccess = (state, action) => {
     console.log('Inside fetch policies');
     return updateObject(state, {
         policiesDetails: action.policiesDetails,
-        loading: false
+        loading: false,
+        purchased: false
     });
 }
 
 const fetchPoliciesFail = (state, action) => {
-    return updateObject(state, {loading: false});
+    return updateObject(state, {loading: false, purchased: false});
 }
 
 const reducer = (state = initialState, action) => {
