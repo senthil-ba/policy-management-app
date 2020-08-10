@@ -1,4 +1,4 @@
-import * as actionTypes from '../actions/actionTypes'; 
+import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     policiesDetails: [],
@@ -14,7 +14,7 @@ const updateObject = (oldObject, updatedProperties) => {
 };
 
 const purchasePolicyStart = (state, action) => {
-    return updateObject(state, {loading: true, purchased: false});
+    return updateObject(state, { loading: true, purchased: false });
 }
 
 const purchasePolicySuccess = (state, action) => {
@@ -26,15 +26,15 @@ const purchasePolicySuccess = (state, action) => {
 };
 
 const purchasePolicyFail = (state, action) => {
-    return updateObject(state, {loading: false, purchased: false});
+    return updateObject(state, { loading: false, purchased: false });
 }
 
 const fetchPoliciesStart = (state, action) => {
-    return updateObject(state, {loading: true, purchased: false});
+    return updateObject(state, { loading: true, purchased: false });
 }
 
 const fetchPoliciesSuccess = (state, action) => {
-    
+
     return updateObject(state, {
         policiesDetails: action.policiesDetails,
         loading: false,
@@ -43,19 +43,19 @@ const fetchPoliciesSuccess = (state, action) => {
 }
 
 const fetchPoliciesFail = (state, action) => {
-    return updateObject(state, {loading: false, purchased: false});
+    return updateObject(state, { loading: false, purchased: false });
 }
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.PURCHASE_POLICY_START: return purchasePolicyStart(state,action);
-        case actionTypes.PURCHASE_POLICY_SUCCESS: return purchasePolicySuccess(state,action);
-        case actionTypes.PURCHASE_POLICY_FAIL: return purchasePolicyFail(state,action);
-        case actionTypes.FETCH_POLICIES_START: return fetchPoliciesStart(state,action);
-        case actionTypes.FETCH_POLICIES_SUCCESS: return fetchPoliciesSuccess(state,action);
-        case actionTypes.FETCH_POLICIES_FAIL: return fetchPoliciesFail(state,action);
+        case actionTypes.PURCHASE_POLICY_START: return purchasePolicyStart(state, action);
+        case actionTypes.PURCHASE_POLICY_SUCCESS: return purchasePolicySuccess(state, action);
+        case actionTypes.PURCHASE_POLICY_FAIL: return purchasePolicyFail(state, action);
+        case actionTypes.FETCH_POLICIES_START: return fetchPoliciesStart(state, action);
+        case actionTypes.FETCH_POLICIES_SUCCESS: return fetchPoliciesSuccess(state, action);
+        case actionTypes.FETCH_POLICIES_FAIL: return fetchPoliciesFail(state, action);
 
-        default: 
+        default:
             return state;
     }
 };

@@ -32,12 +32,12 @@ const handleDownload = () => {
     method: 'GET',
     responseType: 'blob', // important
   }).then((response) => {
-     const url = window.URL.createObjectURL(new Blob([response.data]));
-     const link = document.createElement('a');
-     link.href = url;
-     link.setAttribute('download', 'file.pdf'); //or any other extension
-     document.body.appendChild(link);
-     link.click();
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'file.pdf'); //or any other extension
+    document.body.appendChild(link);
+    link.click();
   });
 
 };
@@ -55,12 +55,12 @@ export default function Policy(props) {
           Policy Type: {props.policyDetails.policyName}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          Policy Amount: { props.policyDetails.policyAmount }
+          Policy Amount: {props.policyDetails.policyAmount}
         </Typography>
         <Typography variant="body2" component="p">
-          Policy Tenure: { props.policyDetails.policyTenure }
+          Policy Tenure: {props.policyDetails.policyTenure}
           <br />
-          Policy Registration: { props.policyDetails.policyStartDate }
+          Policy Registration: {props.policyDetails.policyStartDate}
         </Typography>
       </CardContent>
       <CardActions>

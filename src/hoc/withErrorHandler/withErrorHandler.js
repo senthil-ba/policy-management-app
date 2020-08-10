@@ -28,14 +28,13 @@ const withErrorHandler = (WrappedComponent) => {
             this.setState({ error: null, open: false });
         }
 
-
         render() {
-            let content = null; 
-            if(this.state.error) {
-                content = customErrorMessage[this.state.error.message] ? customErrorMessage[this.state.error.message]: null;
+            let content = null;
+            if (this.state.error) {
+                content = customErrorMessage[this.state.error.message] ? customErrorMessage[this.state.error.message] : null;
             }
             return (
-                <React.Fragment>                    
+                <React.Fragment>
                     <CustomModal content={content} open={this.state.open} handleClose={this.errorConfirmedHandler} />;
                     <WrappedComponent {...this.props} />
                 </React.Fragment>
@@ -45,7 +44,7 @@ const withErrorHandler = (WrappedComponent) => {
 }
 
 const customErrorMessage = {
-    "Request failed with status code 400" : "Authentication Failed."
+    "Request failed with status code 400": "Authentication Failed."
 }
 
 export default withErrorHandler;

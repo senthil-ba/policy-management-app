@@ -1,7 +1,7 @@
 import React from 'react';
-import PoliciesCard from '../PoliciesCard/PoliciesCard';
+import PoliciesCard from '../UI/Cards/PoliciesCard/PoliciesCard';
 import { makeStyles } from '@material-ui/core/styles';
-import {Grid} from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     H3: {

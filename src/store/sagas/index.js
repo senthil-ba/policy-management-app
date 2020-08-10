@@ -1,5 +1,5 @@
-import * as actionTypes from '../actions/actionTypes'; 
-import {takeEvery, all} from 'redux-saga/effects';
+import * as actionTypes from '../actions/actionTypes';
+import { takeEvery, all } from 'redux-saga/effects';
 import { signUpSaga, signInSaga, checkAuthTimeoutSaga, logoutSaga, authCheckStateSaga, updateUserSaga, fetchUserSaga } from './auth';
 import { purchasePolicySaga, fetchPoliciesSaga } from './policy';
 
@@ -18,7 +18,7 @@ export function* watchAuth() {
 
 export function* watchPolicy() {
     yield all([
-        takeEvery(actionTypes.PURCHASE_POLICY, purchasePolicySaga), 
+        takeEvery(actionTypes.PURCHASE_POLICY, purchasePolicySaga),
         takeEvery(actionTypes.FETCH_POLICIES, fetchPoliciesSaga)
-    ]); 
+    ]);
 }

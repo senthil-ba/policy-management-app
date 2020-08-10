@@ -5,7 +5,7 @@ import Logout from './containers/auth/Logout/Logout';
 import SignUp from './containers/auth/SignUp/SignUp';
 import Dashboard from './containers/Dashboard/Dashboard';
 import PolicyList from './containers/PolicyList/PolicyList';
-import Purchase from './components/Purchase/Purchase';
+import Purchase from './containers/Purchase/Purchase';
 import UserDetails from './containers/auth/UserDetails/UserDetails';
 import * as actions from './store/actions/index';
 import { connect } from 'react-redux';

@@ -4,8 +4,8 @@ import * as Yup from "yup";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import CustomModal from '../UI/CustomModal/CustomModal';
-import FormikField from "../FormikField/FormikField";
-import FormikSelect from "../FormikSelect/FormikSelect";
+import FormikField from "../UI/FormikField/FormikField";
+import FormikSelect from "../UI/FormikSelect/FormikSelect";
 
 
 const genderSelect = [

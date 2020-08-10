@@ -4,7 +4,7 @@ import { Formik, Form } from 'formik';
 import { Redirect } from 'react-router-dom';
 import * as Yup from "yup";
 import { Grid, Button, Box, CircularProgress } from "@material-ui/core";
-import FormikField from "../../../components/FormikField/FormikField";
+import FormikField from "../../../components/UI/FormikField/FormikField";
 import * as actions from '../../../store/actions/index';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 
@@ -20,7 +20,6 @@ const SignupSchema = Yup.object().shape({
 
 const login = (props) => {
     const handleSubmit = (credentials) => {
-        alert(JSON.stringify(credentials));
         props.onSignIn(credentials.username, credentials.password);
     };
     

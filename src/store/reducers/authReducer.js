@@ -1,4 +1,4 @@
-import * as actionTypes from '../actions/actionTypes'; 
+import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     userDetails: null,
@@ -18,7 +18,7 @@ const updateObject = (oldObject, updatedProperties) => {
 };
 
 const signUpStart = (state, action) => {
-    return updateObject(state, {error: null, loading: true});
+    return updateObject(state, { error: null, loading: true });
 }
 
 const signUpSuccess = (state, action) => {
@@ -35,7 +35,7 @@ const signUpSuccess = (state, action) => {
 const signUpFail = (state, action) => {
     return updateObject(state, {
         error: action.error,
-        loading: false, 
+        loading: false,
         authRedirectPath: "/signup"
     });
 };
@@ -66,11 +66,11 @@ const signInFail = (state, action) => {
 };
 
 const updateUserStart = (state, action) => {
-    return updateObject(state, {error: null, loading: true});
+    return updateObject(state, { error: null, loading: true });
 }
 
 const updateUserSuccess = (state, action) => {
-    const userObject = []; 
+    const userObject = [];
     userObject.concat(action.userDetails);
     return updateObject(state, {
         userDetails: userObject,
@@ -83,18 +83,18 @@ const updateUserSuccess = (state, action) => {
 const updateUserFail = (state, action) => {
     return updateObject(state, {
         error: action.error,
-        loading: false, 
+        loading: false,
         authRedirectPath: "/home"
     });
 };
 
 const fetchUserStart = (state, action) => {
-    return updateObject(state, {error: null, loading: true});
+    return updateObject(state, { error: null, loading: true });
 }
 
 const fetchUserSuccess = (state, action) => {
     const userObject = updateObject(state.userDetails, action.userDetails);
-   
+
 
     return updateObject(state, {
         userDetails: userObject,
@@ -107,7 +107,7 @@ const fetchUserSuccess = (state, action) => {
 const fetchUserFail = (state, action) => {
     return updateObject(state, {
         error: action.error,
-        loading: false, 
+        loading: false,
         authRedirectPath: "/home"
     });
 };
@@ -120,25 +120,25 @@ const authLogout = (state, action) => {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.SIGNUP_START: return signUpStart(state,action);
-        case actionTypes.SIGNUP_SUCCESS: return signUpSuccess(state,action);
-        case actionTypes.SIGNUP_FAIL: return signUpFail(state,action);
-        
-        case actionTypes.SIGNIN_START: return signInStart(state,action);
-        case actionTypes.SIGNIN_SUCCESS: return signInSuccess(state,action);
-        case actionTypes.SIGNIN_FAIL: return signInFail(state,action);
+        case actionTypes.SIGNUP_START: return signUpStart(state, action);
+        case actionTypes.SIGNUP_SUCCESS: return signUpSuccess(state, action);
+        case actionTypes.SIGNUP_FAIL: return signUpFail(state, action);
 
-        case actionTypes.UPDATE_USER_START: return updateUserStart(state,action);
-        case actionTypes.UPDATE_USER_SUCCESS: return updateUserSuccess(state,action);
-        case actionTypes.UPDATE_USER_FAIL: return updateUserFail(state,action);
+        case actionTypes.SIGNIN_START: return signInStart(state, action);
+        case actionTypes.SIGNIN_SUCCESS: return signInSuccess(state, action);
+        case actionTypes.SIGNIN_FAIL: return signInFail(state, action);
 
-        case actionTypes.FETCH_USER_START: return fetchUserStart(state,action);
-        case actionTypes.FETCH_USER_SUCCESS: return fetchUserSuccess(state,action);
-        case actionTypes.FETCH_USER_FAIL: return fetchUserFail(state,action);
+        case actionTypes.UPDATE_USER_START: return updateUserStart(state, action);
+        case actionTypes.UPDATE_USER_SUCCESS: return updateUserSuccess(state, action);
+        case actionTypes.UPDATE_USER_FAIL: return updateUserFail(state, action);
 
-        case actionTypes.AUTH_LOGOUT: return authLogout(state,action);
+        case actionTypes.FETCH_USER_START: return fetchUserStart(state, action);
+        case actionTypes.FETCH_USER_SUCCESS: return fetchUserSuccess(state, action);
+        case actionTypes.FETCH_USER_FAIL: return fetchUserFail(state, action);
 
-        default: 
+        case actionTypes.AUTH_LOGOUT: return authLogout(state, action);
+
+        default:
             return state;
     }
 };

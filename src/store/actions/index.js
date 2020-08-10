@@ -10,7 +10,7 @@ export {
     checkAuthTimeout,
     logout,
     logoutSuccess,
-    authCheckState, 
+    authCheckState,
     updateUser,
     updateUserStart,
     updateUserSuccess,
