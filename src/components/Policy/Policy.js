@@ -46,7 +46,7 @@ export default function Policy(props) {
   const classes = useStyles();
 
   return (
-    <Card key={props.policyDetails.id} className={classes.root} variant="outlined">
+    <Card key={props.policyDetails.id} className={classes.root} data-test="card-display" variant="outlined">
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
           Policy Details
