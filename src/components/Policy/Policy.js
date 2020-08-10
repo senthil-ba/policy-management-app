@@ -5,6 +5,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
+
 
 const useStyles = makeStyles({
   root: {
@@ -23,9 +25,24 @@ const useStyles = makeStyles({
   },
 });
 
+const handleDownload = () => {
+  console.log('Inside download');
+  axios({
+    url: 'https://policy-management-app-97345.firebaseio.com/userDetails/-44pkavIIXTZ9W2Dfr2R70LXkAi72.json', //your url
+    method: 'GET',
+    responseType: 'blob', // important
+  }).then((response) => {
+     const url = window.URL.createObjectURL(new Blob([response.data]));
+     const link = document.createElement('a');
+     link.href = url;
+     link.setAttribute('download', 'file.pdf'); //or any other extension
+     document.body.appendChild(link);
+     link.click();
+  });
+
+};
+
 export default function Policy(props) {
-  console.log('Inside Policy component'); 
-  console.log(props.policyDetails);
   const classes = useStyles();
 
   return (
@@ -47,7 +64,7 @@ export default function Policy(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Download</Button>
+        <Button size="small" onClick={handleDownload}>Download</Button>
       </CardActions>
     </Card>
   );

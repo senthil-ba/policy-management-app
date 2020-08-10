@@ -35,8 +35,6 @@ const SignUp = props => {
     history.replace('/');
   };
 
-  console.log('inside signup', initialValues);
-
   return (
     <div>
       <UserDetails

@@ -1,7 +1,7 @@
 import * as actionTypes from '../actions/actionTypes'; 
 
 const initialState = {
-    userDetails: [],
+    userDetails: null,
     token: null,
     userId: null,
     username: null,
@@ -48,7 +48,6 @@ const signInStart = (state, action) => {
 };
 
 const signInSuccess = (state, action) => {
-    console.log('Inside signin success');
     return updateObject(state, {
         token: action.idToken,
         userId: action.userId,
@@ -71,13 +70,10 @@ const updateUserStart = (state, action) => {
 }
 
 const updateUserSuccess = (state, action) => {
-    const updatedUserDetails = {...action.userDetails};
-
+    const userObject = []; 
+    userObject.concat(action.userDetails);
     return updateObject(state, {
-        token: action.idToken,
-        userId: action.userId,
-        username: action.username,
-        userDetails: updatedUserDetails,
+        userDetails: userObject,
         error: null,
         loading: false,
         authRedirectPath: "/home"
@@ -97,10 +93,11 @@ const fetchUserStart = (state, action) => {
 }
 
 const fetchUserSuccess = (state, action) => {
-    const updatedUserDetails = {...action.userDetails};
+    const userObject = updateObject(state.userDetails, action.userDetails);
+   
 
     return updateObject(state, {
-        userDetails: updatedUserDetails,
+        userDetails: userObject,
         error: null,
         loading: false,
         authRedirectPath: "/home"

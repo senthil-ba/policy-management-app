@@ -32,9 +32,6 @@ const withErrorHandler = (WrappedComponent) => {
         render() {
             let content = null; 
             if(this.state.error) {
-                console.log('Inside error handler');
-                console.log(this.state.error.message); 
-                console.log(customErrorMessage[this.state.error.message]); 
                 content = customErrorMessage[this.state.error.message] ? customErrorMessage[this.state.error.message]: null;
             }
             return (

@@ -21,15 +21,12 @@ const UserDetails = props => {
     history.replace('/home');
   };
 
-  console.log('######################');
-  console.log(props.userDetails);
-  console.log('##################');
   let userDetails = {}; 
   if(props.userDetails) {
-    userDetails = props.userDetails[0];
+    console.log('inside if loop***************');
+    userDetails = props.userDetails;
   }
   
-
   return (
     <div>
       <UserDetailsPage

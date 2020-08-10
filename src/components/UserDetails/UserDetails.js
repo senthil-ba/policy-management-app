@@ -73,29 +73,33 @@ const SignupSchema = Yup.object().shape({
 function UserDetails(props) {
 
     let initialValues = {
-        name: "Senthil",
-        username: 'senthil',
-        password: 'password',
-        email: 'test@test.com',
-        contact: '1234567890',
+        name: "",
+        username: '',
+        password: '',
+        email: '',
+        contact: '',
         citizenship: '',
-        dateofbirth: '01-01-1990',
-        registrationdate: '07-08-2020',
-        address: 'Main street',
-        state: 'Tamil Nadu',
+        dateofbirth: '',
+        registrationdate: '',
+        address: '',
+        state: '',
         country: 'India',
-        maritalstatus: "married",
-        gender: "male"
+        maritalstatus: "",
+        gender: ""
       };
 
-    if(props.values){
-        initialValues= {...props.values};
+    initialValues= props.values;
+
+    const getValues = () => {
+        return initialValues;
     }
+
     
     let form = <CircularProgress />;
     if (!props.loading) {
         form = (<Formik
-            initialValues={initialValues}
+            enableReinitialize
+            initialValues={getValues()}
             onSubmit={props.handleSubmit}
             validationSchema={SignupSchema}
         >

@@ -33,7 +33,6 @@ export function* signUpSaga(action) {
     const userlookupUrl = "https://policy-management-app-97345.firebaseio.com/userLookup.json";
     const queryParams = '?orderBy="username"&equalTo="' + action.userDetails.username + '"';
     const lookupUrl = userlookupUrl + queryParams;
-    console.log(lookupUrl);
     const userDetailsUrl = "https://policy-management-app-97345.firebaseio.com/userDetails.json";
 
     const signUpUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA52UmrfJZWgm5etszmAwZnw246lVplDy0";
@@ -41,14 +40,9 @@ export function* signUpSaga(action) {
     try {
 
         const userResponse = yield axios.get(lookupUrl);
-        console.log(userResponse);
-        console.log(Object.entries(userResponse.data).length);
-        if(Object.entries(userResponse.data).length === 0) {
-            console.log('inside if loop');
-            const response = yield axios.post(signUpUrl, authData);
-            console.log('Response from service')
-            console.log(response);
 
+        if(Object.entries(userResponse.data).length === 0) {
+            const response = yield axios.post(signUpUrl, authData);
             const expirationDate = yield new Date(
                 new Date().getTime() + response.data.expiresIn * 1000
             );
@@ -61,13 +55,12 @@ export function* signUpSaga(action) {
             yield axios.post(userlookupUrl, userLookupData);
             yield axios.post(userDetailsUrl, action.userDetails);
 
-            console.log('Before closing if loop');
             yield put(actions.signUpSucceed(response.data.idToken, response.data.localId, action.userDetails.username));
         } else {
             yield put(actions.signUpFail('User is already present. Please use different user/email id'));
         }
     } catch (error) {
-        console.log(error);
+        
         yield put(actions.signUpFail(error.response));
     }
 };
@@ -94,8 +87,6 @@ export function* signInSaga (action) {
 
             try{
                 const response = yield axios.post(signInUrl, credentials);
-                console.log('Response from service')
-                console.log(response);
                 if(!response) {
                     throw new Error("Authentication Failed");
                 }
@@ -111,8 +102,6 @@ export function* signInSaga (action) {
                     actions.signInSuccess(response.data.idToken, response.data.localId, action.username)
                 );
             } catch(error) {
-                console.log('New error'); 
-                console.log(error);
                 yield put(actions.signInFail(error));
             }
         } else {
@@ -150,39 +139,29 @@ export function* updateUserSaga(action) {
     const token = yield localStorage.getItem("token"); 
     const userId = yield localStorage.getItem("userId"); 
     yield put(actions.updateUserStart);
-    const userDetailsUrl = "https://policy-management-app-97345.firebaseio.com/userDetails.json";
-    const queryParams = '?orderBy="username"&equalTo="' + action.username + '"';
+    const userDetailsUrl = "https://policy-management-app-97345.firebaseio.com/userDetails/-" + userId +".json";
+
     try {
-        yield axios.put(userDetailsUrl+queryParams, action.userDetails);
+        yield axios.patch(userDetailsUrl, action.userDetails);
         yield put(actions.updateUserSuccess(token, userId, action.username));
     } catch(error) {
-        console.log(error);
         yield put(actions.updateUserFail(error));
     }
 }
 
 export function* fetchUserSaga(action) {
     yield put(actions.fetchUserStart);
-    const token = yield localStorage.getItem("token"); 
+    //const token = yield localStorage.getItem("token"); 
     const userId = yield localStorage.getItem("userId"); 
-    console.log(token, userId);
-
-    const userDetailsUrl = "https://policy-management-app-97345.firebaseio.com/userDetails.json";
-    const queryParams = '?orderBy="username"&equalTo="' + action.username + '"';
+    
+    const userDetailsUrl = "https://policy-management-app-97345.firebaseio.com/userDetails/-" + userId + '.json';
+    
     try {
-        const response = yield axios.get(userDetailsUrl + queryParams);
+        const response = yield axios.get(userDetailsUrl);
         console.log(response);
-
-        const fetchedUserDetails = [];
-        for (let key in response.data) {
-            fetchedUserDetails.push({
-                ...response.data[key],
-                id: key
-            });
-        }
-        console.log('Fetched User details', fetchedUserDetails);
-
-        yield put(actions.fetchUserSuccess(fetchedUserDetails));
+        console.log(response.data);
+        
+        yield put(actions.fetchUserSuccess(response.data));
     } catch(error) {
         yield put(actions.fetchUserFail);
     }   

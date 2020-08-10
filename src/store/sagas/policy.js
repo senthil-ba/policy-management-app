@@ -10,7 +10,6 @@ export function* purchasePolicySaga(action) {
     try {
         const response = yield axios.post(policyDetailsUrl, policyData);
         const updatedPolicyData = { ...policyData, id: response.data['name'] };
-        console.log('purchasesaga', updatedPolicyData);
         yield put(actions.purchasePolicySuccess(updatedPolicyData));
     } catch (error) {
         alert(error);
@@ -27,7 +26,7 @@ export function* fetchPoliciesSaga(action) {
 
     try {
         const response = yield axios.get(policyDetailsUrl);
-        console.log('policy fetch response', response);
+        
         const fetchedPolicies = [];
         for (let key in response.data) {
             fetchedPolicies.push({
@@ -35,8 +34,7 @@ export function* fetchPoliciesSaga(action) {
                 id: key
             });
         }
-        console.log('policy fetch response', fetchedPolicies);
-
+        
         yield put(actions.fetchPoliciesSuccess(fetchedPolicies));
     } catch (error) {
         alert(error);

@@ -30,7 +30,6 @@ export const signUpFail = (error) => {
 };
 
 export const signIn = (username, password) => {
-    console.log('User Name', username);
     return {
         type: actionTypes.SIGNIN_USER, 
         username: username,
@@ -54,9 +53,6 @@ export const signInSuccess = (token, userId, username) => {
 }
 
 export const signInFail = error => {
-
-    console.log('Inside signin fail action'); 
-    console.log(error);
     return {
         type: actionTypes.SIGNIN_FAIL,
         error: error      

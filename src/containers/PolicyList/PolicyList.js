@@ -8,11 +8,12 @@ const PolicyList = (props) => {
     const { onFetchPolicies, token, userId } = props;
 
     useEffect(() => {
-        console.log('inside use effect');
         onFetchPolicies(token, userId);
     }, [onFetchPolicies, token, userId]);
 
+    console.log('Inside Policy List'); 
 
+    console.log(props.policiesDetails);
         let policyList = <CircularProgress />;
 
     if (!props.loading) {

@@ -1,68 +1,75 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Policy Management App
 
-## Available Scripts
+![GitHub repo size](https://img.shields.io/github/repo-size/senthil-ba/policy-management-app)
+![GitHub contributors](https://img.shields.io/github/contributors/senthil-ba/policy-management-app)
+![GitHub stars](https://img.shields.io/github/stars/senthil-ba/policy-management-app?style=social)
+![GitHub forks](https://img.shields.io/github/forks/senthil-ba/policy-management-app?style=social)
 
-In the project directory, you can run:
 
-### `npm start`
+Policy Management app is allow registered users to purchase policy, view purchased policies and update their registration details.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Prerequisites
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Before you begin, ensure you have met the following requirements:
 
-### `npm test`
+* You have installed the latest version of Node (npm)
+* You have a `<Windows/Linux/Mac>` machine. 
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Frameworks Used
 
-### `npm run build`
+| Framework  |  Purpose | Reference  |  
+|------------|----------|------------|
+| Material UI  | UI Design   |  [Material UI](https://material-ui.com/) |
+| Formik  | Form Handling  |  [formik](https://formik.org/) |
+| Yup  | Validation Framework  |  [yup](https://github.com/jquense/yup) |
+| Jest | Testing Library | [Jest](https://jestjs.io/) |
+| Enzyme | React Rendering Library | [Enzyme](https://enzymejs.github.io/enzyme/) |
+| redux-thunk | Asynchronus service invocation | [redux-thunk](https://github.com/reduxjs/redux-thunk) | 
+| redux-saga | Async state management framework | [redux-saga](https://redux-saga.js.org/)|
+| react-redux | Global State Management Framework | [react-redux](https://react-redux.js.org/)| 
+| react-router-dom | Routing handling | [react-router-dom](https://www.npmjs.com/package/react-router-dom) |
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Installing Project Management App
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+To install Policy Management App, follow these steps:
 
-### `npm run eject`
+Refer [Create-React-App Documentation](./README-CREATE-REACT-APP.md)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Using Project Management App
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+To use Policy Management App, follow these steps:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```
+Run following commands from root folder. 
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+npm install
+npm start
+```
 
-## Learn More
+## Contributing to Policy Management App
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+To contribute to Policy Management App, follow these steps:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Fork this repository.
+2. Create a branch: `git checkout -b <branch_name>`.
+3. Make your changes and commit them: `git commit -m '<commit_message>'`
+4. Push to the original branch: `git push origin <project_name>/<location>`
+5. Create the pull request.
 
-### Code Splitting
+Alternatively see the GitHub documentation on [creating a pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## Contributors
 
-### Analyzing the Bundle Size
+Thanks to the following people who have contributed to this project:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+* [@senthil-ba](https://github.com/senthil-ba) 📖
 
-### Making a Progressive Web App
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+## Contact
 
-### Advanced Configuration
+If you want to contact me you can reach me at <senthil@gmail.com>.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+## License
 
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Not Applicable

@@ -34,10 +34,9 @@ const fetchPoliciesStart = (state, action) => {
 }
 
 const fetchPoliciesSuccess = (state, action) => {
-    console.log('Inside fetch policies');
-    const updatedPoliciesDetails = {...action.policiesDetails};
+    
     return updateObject(state, {
-        policiesDetails: updatedPoliciesDetails,
+        policiesDetails: action.policiesDetails,
         loading: false,
         purchased: false
     });
@@ -48,9 +47,6 @@ const fetchPoliciesFail = (state, action) => {
 }
 
 const reducer = (state = initialState, action) => {
-    console.log('inside reducer'); 
-    console.log(action.type); 
-    console.log(JSON.stringify(action.userDetails));
     switch (action.type) {
         case actionTypes.PURCHASE_POLICY_START: return purchasePolicyStart(state,action);
         case actionTypes.PURCHASE_POLICY_SUCCESS: return purchasePolicySuccess(state,action);
