@@ -3,41 +3,48 @@ import { connect } from 'react-redux';
 import * as actions from '../../../store/actions/index.js';
 import UserDetailsPage from '../../../components/UserDetails/UserDetails';
 import { useHistory } from 'react-router-dom';
-
-const content = 'Registration is successful with given user details. Opening up the home page!!!';
+import CustomModal from '../../../components/UI/CustomModal/CustomModal';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 
 const UserDetails = props => {
   const history = useHistory();
   const { onFetchUserDetails, username } = props;
-  useEffect(()=> {
+  useEffect(() => {
     onFetchUserDetails(username);
-  },[onFetchUserDetails, username]);
+  }, [onFetchUserDetails, username]);
 
   const handleSubmit = (userDetails) => {
     props.onUserUpdate(userDetails);
   };
 
   const handleClose = () => {
+    props.onUserUpdateSuccess();
     history.replace('/home');
   };
 
-  let userDetails = {}; 
-  if(props.userDetails) {
-    console.log('inside if loop***************');
+  let userDetails = {};
+  if (props.userDetails) {
+    
     userDetails = props.userDetails;
   }
-  
+
+  const content = 'Hurray!!! User Profile update successful!!!';
+
+  let userDetailsPage = <UserDetailsPage
+    loading={props.loading}
+    heading={'Update profile'}
+    values={userDetails}
+    handleSubmit={handleSubmit}
+    isAuthenticated={false}
+  ></UserDetailsPage>;
+
+  if (props.updatedUser) {
+    userDetailsPage = <CustomModal content={content} open={props.isAuthenticated} handleClose={handleClose} />;
+  }
+
   return (
     <div>
-      <UserDetailsPage
-        loading={props.loading}
-        heading={'Update profile'}
-        values={userDetails}
-        handleSubmit={handleSubmit}
-        modalContent={content}
-        isAuthenticated={false}
-        handleClose={handleClose}        
-      ></UserDetailsPage>
+      {userDetailsPage}
     </div>
   );
 };
@@ -47,16 +54,18 @@ const mapStateToProps = state => {
     loading: state.auth.loading,
     error: state.auth.error,
     isAuthenticated: state.auth.token !== null,
-    userDetails: state.auth.userDetails, 
-    username: state.auth.username
+    userDetails: state.auth.userDetails,
+    username: state.auth.username,
+    updatedUser: state.auth.updatedUser
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     onUserUpdate: userDetails => dispatch(actions.updateUser(userDetails)),
-    onFetchUserDetails: username => dispatch(actions.fetchUser(username))
+    onFetchUserDetails: username => dispatch(actions.fetchUser(username)),
+    onUserUpdateSuccess: () => dispatch(actions.updateUpdatedUserState())
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(UserDetails));

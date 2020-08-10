@@ -10,13 +10,13 @@ import createSagaMiddleware from "redux-saga";
 import authReducer from './store/reducers/authReducer';
 import policyReducer from './store/reducers/policyReducer';
 import thunk from 'redux-thunk';
-import {watchAuth, watchPolicy} from './store/sagas';
+import { watchAuth, watchPolicy } from './store/sagas';
 
 
-const composeEnhancers = 
-  process.env.NODE_ENV === "development" 
-  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ 
-  : null || compose;
+const composeEnhancers =
+  process.env.NODE_ENV === "development"
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    : null || compose;
 
 const rootReducers = combineReducers({
   auth: authReducer,
@@ -34,14 +34,12 @@ sagaMiddlware.run(watchAuth);
 sagaMiddlware.run(watchPolicy);
 
 ReactDOM.render(
-
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
-,
-  document.getElementById('root')
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>
+  , document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

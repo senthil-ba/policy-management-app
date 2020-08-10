@@ -3,27 +3,26 @@ import { connect } from 'react-redux';
 import * as actions from '../../../store/actions/index.js';
 import UserDetails from '../../../components/UserDetails/UserDetails';
 import { useHistory } from 'react-router-dom';
+import CustomModal from '../../../components/UI/CustomModal/CustomModal';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import { Button} from "@material-ui/core";
 
 
 const initialValues = {
-  name: "Sathya",
-  username: 'senthil',
-  password: 'password',
-  email: 'test@test.com',
-  contact: '1234567890',
+  name: '',
+  username: '',
+  password: '',
+  email: '',
+  contact: '',
   citizenship: '',
-  dateofbirth: '01-01-1990',
-  registrationdate: '07-08-2020',
-  address: 'Main street',
-  state: 'Tamil Nadu',
-  country: 'India',
-  maritalstatus: "married",
-  gender: "male"
+  dateofbirth: '',
+  registrationdate: '',
+  address: '',
+  state: '',
+  country: '',
+  maritalstatus: '',
+  gender: ''
 };
-
-const content = 'Registration is successful with given user details. Opening up the home page!!!';
-
-
 
 const SignUp = props => {
   const history = useHistory();
@@ -35,18 +34,28 @@ const SignUp = props => {
     history.replace('/');
   };
 
+  console.log(props.customerId);
+  const content = `Registration is successful with given user details. Your customer id ${props.customerId}. Opening up the home page!!!`;
+
+  let signUp = <UserDetails
+    loading={props.loading}
+    heading={'User Registration'}
+    values={initialValues}
+    handleSubmit={handleSubmit}
+    isAuthenticated={props.isAuthenticated}
+    {...props}
+  ></UserDetails>;
+  if (props.isAuthenticated) {
+    signUp = <CustomModal content={content} open={props.isAuthenticated} handleClose={handleClose} />;
+  } 
+
   return (
-    <div>
-      <UserDetails
-        loading={props.loading}
-        heading={'Sign Up'}
-        values={initialValues}
-        handleSubmit={handleSubmit}
-        modalContent={content}
-        isAuthenticated={props.isAuthenticated}
-        handleClose={handleClose}
-        {...props}
-      ></UserDetails>
+    <div style={{textAlign: 'center'}}>
+      {signUp}
+      <br />
+      {props.isAuthenticated ? null : <Button onClick={handleClose} variant="contained" color="primary">Sign In</Button>}
+      <br />
+      <br />
     </div>
   );
 };
@@ -56,7 +65,8 @@ const mapStateToProps = state => {
     loading: state.auth.loading,
     error: state.auth.error,
     isAuthenticated: state.auth.token !== null,
-    authRedirectPath: state.auth.authRedirectPath
+    authRedirectPath: state.auth.authRedirectPath,
+    customerId: state.auth.customerId
   };
 }
 
@@ -66,4 +76,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(SignUp));

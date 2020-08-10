@@ -7,6 +7,9 @@ const initialState = {
     username: null,
     loading: false,
     error: null,
+    customerId: null,
+    updatedUser: false,
+    signUp: false,
     authRedirectPath: "/"
 };
 
@@ -18,7 +21,7 @@ const updateObject = (oldObject, updatedProperties) => {
 };
 
 const signUpStart = (state, action) => {
-    return updateObject(state, { error: null, loading: true });
+    return updateObject(state, { error: null, loading: true, signUp: true });
 }
 
 const signUpSuccess = (state, action) => {
@@ -26,8 +29,10 @@ const signUpSuccess = (state, action) => {
         token: action.idToken,
         userId: action.userId,
         username: action.username,
+        customerId: action.customerId,
         error: null,
         loading: false,
+        signUp: false,
         authRedirectPath: "/"
     });
 };
@@ -36,6 +41,7 @@ const signUpFail = (state, action) => {
     return updateObject(state, {
         error: action.error,
         loading: false,
+        signUp: true,
         authRedirectPath: "/signup"
     });
 };
@@ -52,6 +58,7 @@ const signInSuccess = (state, action) => {
         token: action.idToken,
         userId: action.userId,
         username: action.username,
+        customerId: action.customerId,
         error: null,
         loading: false,
         authRedirectPath: "/home"
@@ -66,16 +73,16 @@ const signInFail = (state, action) => {
 };
 
 const updateUserStart = (state, action) => {
-    return updateObject(state, { error: null, loading: true });
+    return updateObject(state, { error: null, loading: true, updatedUser: false });
 }
 
-const updateUserSuccess = (state, action) => {
-    const userObject = [];
-    userObject.concat(action.userDetails);
+const updateUserSuccess = (state, action) => {   
     return updateObject(state, {
-        userDetails: userObject,
+        username: action.username,
+        userDetails: action.userDetails,
         error: null,
         loading: false,
+        updatedUser: true,
         authRedirectPath: "/home"
     });
 };
@@ -84,6 +91,7 @@ const updateUserFail = (state, action) => {
     return updateObject(state, {
         error: action.error,
         loading: false,
+        updatedUser: false,
         authRedirectPath: "/home"
     });
 };
@@ -94,8 +102,6 @@ const fetchUserStart = (state, action) => {
 
 const fetchUserSuccess = (state, action) => {
     const userObject = updateObject(state.userDetails, action.userDetails);
-
-
     return updateObject(state, {
         userDetails: userObject,
         error: null,
@@ -112,11 +118,13 @@ const fetchUserFail = (state, action) => {
     });
 };
 
-
-
 const authLogout = (state, action) => {
     return updateObject(state, { token: null, userId: null });
 };
+
+const updateUserUpdateState = (state, action) => {
+    return updateObject(state, {updatedUser: false});
+}
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
@@ -135,6 +143,8 @@ const reducer = (state = initialState, action) => {
         case actionTypes.FETCH_USER_START: return fetchUserStart(state, action);
         case actionTypes.FETCH_USER_SUCCESS: return fetchUserSuccess(state, action);
         case actionTypes.FETCH_USER_FAIL: return fetchUserFail(state, action);
+
+        case actionTypes.UPDATE_USER_UPDATE_STATE: return updateUserUpdateState(state, action);
 
         case actionTypes.AUTH_LOGOUT: return authLogout(state, action);
 

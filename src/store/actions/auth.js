@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes';
 
-export const signUp = (userDetails) => {
+export const signUp = userDetails => {
     return {
         type: actionTypes.SIGNUP_USER,
         userDetails: userDetails
@@ -13,12 +13,13 @@ export const signUpStart = () => {
     }
 };
 
-export const signUpSucceed = (token, userId, username) => {
+export const signUpSucceed = (token, userId, username, customerId) => {
     return {
         type: actionTypes.SIGNUP_SUCCESS,
         idToken: token,
         userId: userId,
-        username: username
+        username: username,
+        customerId: customerId
     }
 };
 
@@ -43,12 +44,13 @@ export const signInStart = () => {
     }
 };
 
-export const signInSuccess = (token, userId, username) => {
+export const signInSuccess = (token, userId, username, customerId) => {
     return {
         type: actionTypes.SIGNIN_SUCCESS,
         idToken: token,
         userId: userId,
-        username: username
+        username: username,
+        customerId: customerId
     }
 }
 
@@ -97,12 +99,11 @@ export const updateUserStart = () => {
     };
 };
 
-export const updateUserSuccess = (token, userId, username) => {
+export const updateUserSuccess = (username, userDetails) => {
     return {
         type: actionTypes.UPDATE_USER_SUCCESS,
-        idToken: token,
-        userId: userId,
-        username: username
+        username: username,
+        userDetails: userDetails
     };
 };
 
@@ -140,3 +141,9 @@ export const fetchUserFail = error => {
         error: error
     };
 };
+
+export const updateUpdatedUserState = () => {
+    return {
+        type: actionTypes.UPDATE_USER_UPDATE_STATE
+    }
+}

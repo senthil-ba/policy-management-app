@@ -11,9 +11,7 @@ const Dashboard = (props) => {
         onFetchPolicies(token, userId);
     }, [onFetchPolicies, token, userId]);
 
-    console.log(props.policiesDetails);
     const length = props.policiesDetails ? props.policiesDetails.length : 'NIL';
-    console.log(length);
     return (
         <div>            
             <Policies policies={length}></Policies>

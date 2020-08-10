@@ -1,11 +1,11 @@
-import React from "react";
+import React, {useRef} from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import CustomModal from '../UI/CustomModal/CustomModal';
 import FormikField from "../UI/FormikField/FormikField";
 import FormikSelect from "../UI/FormikSelect/FormikSelect";
+import Typography from '@material-ui/core/Typography';
 
 
 const genderSelect = [
@@ -71,6 +71,8 @@ const SignupSchema = Yup.object().shape({
 
 
 function UserDetails(props) {
+    const genderRef = useRef();
+    const maritalStatusRef = useRef();
 
     let initialValues = {
         name: "",
@@ -86,15 +88,15 @@ function UserDetails(props) {
         country: 'India',
         maritalstatus: "",
         gender: ""
-      };
+    };
 
-    initialValues= props.values;
+    initialValues = props.values;
 
     const getValues = () => {
         return initialValues;
     }
 
-    
+
     let form = <CircularProgress />;
     if (!props.loading) {
         form = (<Formik
@@ -138,12 +140,14 @@ function UserDetails(props) {
 
                         <div>
                             <FormikSelect
+                                Ref = {genderRef}
                                 name="gender"
                                 items={genderSelect}
                                 label="Gender"
                                 required
                             />
                             <FormikSelect
+                                Ref = {maritalStatusRef}
                                 name="maritalstatus"
                                 items={maritalStatus}
                                 label="Marital Status"
@@ -164,15 +168,12 @@ function UserDetails(props) {
         </Formik>);
     }
 
-    let modalDialog = null;
-    if (props.isAuthenticated) {
-        modalDialog = <CustomModal content={props.modalContent} open={props.isAuthenticated} handleClose={props.handleClose} />;
-    }
 
     return (
         <div style={{ textAlign: "center" }}>
-            <h1>{props.heading}</h1>
-            {modalDialog}
+            <Typography variant="h5" component="h2">
+                {props.heading}
+            </Typography>
             {form}
         </div>
     );

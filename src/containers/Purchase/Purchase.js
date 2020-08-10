@@ -1,29 +1,57 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import * as Yup from "yup";
-import { Formik, Form } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import { Button, Box, CircularProgress } from '@material-ui/core';
 import CustomModal from '../../components/UI/CustomModal/CustomModal';
 import FormikField from '../../components/UI/FormikField/FormikField';
+import FormikSelect from '../../components/UI/FormikSelect/FormikSelect';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import * as actions from '../../store/actions/index';
-
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import { DatePicker } from 'formik-material-ui-pickers';
 
 const initialValues = {
     policyName: '',
     policyAmount: '',
-    policyTenure: '',
-    policyStartDate: '07-08-2020'
+    policyTenure: "5",
+    policyStartDate: ''
 };
+
+const tenureSelect = [
+    {
+        label: "5",
+        value: "5"
+    },
+    {
+        label: "10",
+        value: "10"
+    },
+    {
+        label: "15",
+        value: "15"
+    },
+    {
+        label: "20",
+        value: "20"
+    }
+];
 
 const policySchema = Yup.object().shape({
     policyName: Yup.string().required("Required"),
-    policyAmount: Yup.string().required("Required"),
+    policyAmount: Yup.number()
+        .required("Required")
+        .min(1),
     policyTenure: Yup.string().required("required"),
-    policyStartDate: Yup.string().required("required")
+    policyStartDate: Yup.date()
+        .required("required")
+        .min(new Date())
 });
 
 const Purchase = (props) => {
+    const tenureRef = useRef("5");
     const [open, setOpen] = React.useState(true);
     const history = useHistory();
     const handleClose = () => {
@@ -46,34 +74,45 @@ const Purchase = (props) => {
         >
             {({ dirty, isValid }) => {
                 return (
-                    <Form>
-                        <Box margin={1}>
-                            <FormikField name="policyName" label="Policy Name" required />
-                        </Box>
-                        <Box margin={1}>
-                            <FormikField name="policyAmount" label="Policy Amount" required />
-                        </Box>
-                        <Box margin={1}>
-                            <FormikField name="policyTenure" label="Policy Tenure" required />
-                        </Box>
-                        <Box margin={1}>
-                            <FormikField name="policyStartDate" label="Policy StartDate" required />
-                        </Box>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            disabled={!dirty || !isValid}
-                            type="Purchase"
-                        >
-                            Submit
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <Form>
+                            <Box margin={1}>
+                                <FormikField name="policyName" label="Policy Name" required />
+                            </Box>
+                            <Box margin={1}>
+                                <FormikField name="policyAmount" label="Policy Amount" required />
+                            </Box>
+                            <div style={{ textAlign: "center" }}>
+                                <Box marginleft={20} width="80%" >
+                                    <FormikSelect
+                                        Ref={tenureRef}
+                                        name="policyTenure"
+                                        items={tenureSelect}
+                                        label="Policy_Tenure"
+                                        required={true}
+                                    />
+                                </Box>
+                            </div>
+
+                            <Box margin={1}>
+                                <Field component={DatePicker} name="policyStartDate" label="Policy Start Date" required />
+                            </Box>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                disabled={!dirty || !isValid}
+                                type="Purchase"
+                            >
+                                Submit
                         </Button>
-                    </Form>
+                        </Form>
+                    </MuiPickersUtilsProvider>
                 );
             }}
         </Formik>);
     } else {
         const content = 'Hurry!!! Policy Purchase is Successful!!!';
-        form = <CustomModal content={content}  open={open && props.purchased}  handleClose={handleClose} />;
+        form = <CustomModal content={content} open={open && props.purchased} handleClose={handleClose} />;
     }
 
     // const purchasedRedirect = props.purchased ? <Redirect to="/home" /> : null;
@@ -101,4 +140,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Purchase);
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Purchase));

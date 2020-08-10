@@ -3,6 +3,7 @@ import Policy from '../../components/Policy/Policy';
 import { connect } from 'react-redux';
 import { Grid, Typography, CircularProgress } from '@material-ui/core';
 import * as actions from '../../store/actions/index';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 const PolicyList = (props) => {
     const { onFetchPolicies, token, userId } = props;
@@ -55,4 +56,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PolicyList);
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(PolicyList));

@@ -18,7 +18,8 @@ export {
     fetchUser,
     fetchUserSuccess,
     fetchUserStart,
-    fetchUserFail
+    fetchUserFail,
+    updateUpdatedUserState
 } from './auth';
 
 export {

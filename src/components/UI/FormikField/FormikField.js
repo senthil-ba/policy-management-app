@@ -14,7 +14,7 @@ const FormikField = ({ name, label, type = "text", required = false}) => {
         as={TextField}
         label={label}
         name={name}
-        
+        style={{padding : '5px'}}
         type={type}
         helperText={<ErrorMessage name={name} />}
       />

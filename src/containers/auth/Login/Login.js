@@ -7,6 +7,7 @@ import { Grid, Button, Box, CircularProgress } from "@material-ui/core";
 import FormikField from "../../../components/UI/FormikField/FormikField";
 import * as actions from '../../../store/actions/index';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import Typography from '@material-ui/core/Typography';
 
 const initialValues = {
     username: '',
@@ -22,10 +23,10 @@ const login = (props) => {
     const handleSubmit = (credentials) => {
         props.onSignIn(credentials.username, credentials.password);
     };
-    
+
     let form = <CircularProgress />
 
-    if(!props.loading) {
+    if (!props.loading) {
         form = (
             <Formik
                 initialValues={initialValues}
@@ -70,23 +71,25 @@ const login = (props) => {
             </Formik>);
     }
 
-    let errorMessage = null; 
+    let errorMessage = null;
 
-    if(props.error) {
+    if (props.error) {
         errorMessage = (
             <p>{props.error.message}</p>
         )
     }
 
-    let authRedirect = null; 
+    let authRedirect = null;
 
-    if(props.isAuthenticated) {
+    if (props.isAuthenticated) {
         authRedirect = <Redirect to={props.authRedirectPath} />
     }
 
     return (
-        <div style={{textAlign : "center"}}>
-            <h1>Sign In</h1>
+        <div style={{ textAlign: "center" }}>
+            <Typography variant="h5" component="h2">
+                Sign In
+            </Typography>
             {authRedirect}
             {errorMessage}
             {form}
@@ -98,7 +101,7 @@ const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
         error: state.auth.error,
-        isAuthenticated: state.auth.token !== null, 
+        isAuthenticated: state.auth.token !== null,
         authRedirectPath: state.auth.authRedirectPath
     };
 }
