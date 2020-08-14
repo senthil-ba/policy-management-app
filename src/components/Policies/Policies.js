@@ -6,7 +6,7 @@ import { Grid } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
     H3: {
         textAlign: "left",
-        margin: 20
+        padding: 20
     }
 }));
 

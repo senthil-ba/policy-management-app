@@ -27,8 +27,8 @@ const PolicyList = (props) => {
 
     return (
         <div>
-            <div sytle={{ textAlign: "center", margin: "20px" }} >
-                <Typography variant="h5" component="h2">
+            <div sytle={{ textAlign: "center", padding: "20px" }} >
+                <Typography variant="h5" component="h2" style={{padding: "20px"}}>
                     All Purchased Policies
                 </Typography>
             </div>

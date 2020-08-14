@@ -117,7 +117,7 @@ const Purchase = (props) => {
 
     // const purchasedRedirect = props.purchased ? <Redirect to="/home" /> : null;
     return (
-        <div style={{ textAlign: "center" }}>
+        <div style={{ textAlign: "center", padding: "20px" }}>
             <h1>Policy Purchase</h1>
             {form}
             <br />
