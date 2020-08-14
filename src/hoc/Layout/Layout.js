@@ -6,24 +6,22 @@ import { connect } from 'react-redux';
 
 const Layout = (props) => {
     return (
-        <React.Fragment>
-            <div style={{ backgroundColor: '#cfe8fc', minHeight: '700px' }}>
-                <Grid container direction="column">
-                    <Grid item>
-                        <Header isAuth={props.isAuthenticated} />
-                    </Grid>
-                    <Grid item container>
-                        <Grid item xs={false} sm={2} />
-                        <Grid item xs={12} sm={8}>
-                            <main style={{ backgroundColor: 'white' }}>
-                                {props.children}
-                            </main>
-                            <Grid item xs={false} sm={2} />
-                        </Grid>
-                    </Grid>
+        <div data-test="layout" style={{ backgroundColor: '#cfe8fc', minHeight: '700px' }}>
+            <Grid container direction="column">
+                <Grid item>
+                    <Header isAuth={props.isAuthenticated} />
                 </Grid>
-            </div>
-        </React.Fragment>
+                <Grid item container>
+                    <Grid item xs={false} sm={2} />
+                    <Grid item xs={12} sm={8}>
+                        <main style={{ backgroundColor: "white" }}>
+                            { props.children }
+                        </main>                        
+                    </Grid>
+                    <Grid item xs={false} sm={2} />
+                </Grid>
+            </Grid>
+        </div>
     );
 };
 

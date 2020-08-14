@@ -26,7 +26,6 @@ const useStyles = makeStyles({
 });
 
 const handleDownload = () => {
-  console.log('Inside download');
   axios({
     url: 'https://policy-management-app-97345.firebaseio.com/userDetails/-44pkavIIXTZ9W2Dfr2R70LXkAi72.json', //your url
     method: 'GET',

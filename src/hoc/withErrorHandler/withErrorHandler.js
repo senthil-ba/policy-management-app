@@ -35,7 +35,7 @@ const withErrorHandler = (WrappedComponent) => {
             }
             return (
                 <React.Fragment>
-                    <CustomModal content={content} open={this.state.open} handleClose={this.errorConfirmedHandler} />;
+                    <CustomModal content={content} open={this.state.open} handleClose={this.errorConfirmedHandler} />
                     <WrappedComponent {...this.props} />
                 </React.Fragment>
             );

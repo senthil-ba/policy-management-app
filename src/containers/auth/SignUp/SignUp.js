@@ -34,7 +34,6 @@ const SignUp = props => {
     history.replace('/');
   };
 
-  console.log(props.customerId);
   const content = `Registration is successful with given user details. Your customer id ${props.customerId}. Opening up the home page!!!`;
 
   let signUp = <UserDetails

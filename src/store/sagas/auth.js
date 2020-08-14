@@ -170,7 +170,7 @@ export function* updateUserSaga(action) {
                 userResponseObject = userLookupResponse.data[key];
             }
             const userRecordId = userResponseObject['userRecordId'];
-            console.log(userRecordId);
+            
             const userDetailsUrl = "https://policy-management-app-97345.firebaseio.com/userDetails/" + userRecordId + ".json";
             yield axios.put(userDetailsUrl, action.userDetails);
             yield put(actions.updateUserSuccess(action.username, action.userDetails));
@@ -178,7 +178,6 @@ export function* updateUserSaga(action) {
             throw new Error('No such user in DB.');
         }        
     } catch (error) {
-        console.log(error)
         yield put(actions.updateUserFail(error));
     }
 }
@@ -193,11 +192,9 @@ export function* fetchUserSaga(action) {
                 userResponseObject = userLookupResponse.data[key];
             }
             const userRecordId = userResponseObject['userRecordId'];
-            console.log(userRecordId);
             const userDetailsUrl = "https://policy-management-app-97345.firebaseio.com/userDetails/" + userRecordId + '.json';
             const response = yield axios.get(userDetailsUrl);
 
-            console.log(response);
             yield put(actions.fetchUserSuccess(response.data));
         } else {
             throw new Error("No User details available in DB");

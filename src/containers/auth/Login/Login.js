@@ -86,8 +86,8 @@ const login = (props) => {
     }
 
     return (
-        <div style={{ textAlign: "center" }}>
-            <Typography variant="h5" component="h2">
+        <div data-test="login" style={{ textAlign: "center" }}>
+            <Typography variant="h5" component="h3">
                 Sign In
             </Typography>
             {authRedirect}

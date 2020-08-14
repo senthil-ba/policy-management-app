@@ -12,10 +12,7 @@ const PolicyList = (props) => {
         onFetchPolicies(token, userId);
     }, [onFetchPolicies, token, userId]);
 
-    console.log('Inside Policy List'); 
-
-    console.log(props.policiesDetails);
-        let policyList = <CircularProgress />;
+    let policyList = <CircularProgress />;
 
     if (!props.loading) {
         policyList = (<Grid container spacing={3} style={{ paddingLeft: "40px", paddingRight: "40px" }}>
